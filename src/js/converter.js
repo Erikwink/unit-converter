@@ -2,12 +2,119 @@
  *
  */
 export class Converter {
+  #standardWeightKilos = 0
+  #originalWeight = 0
+
   /** Constructor.
    *
    */
   constructor () {
 
   }
+
+
+  setWeight(weight) {
+    this.#originalWeight = weight
+    return this
+  
+  }
+
+  // nollställa all vikter till ett mått för att kunna bryta ut funktoner och göra grams till vad som???
+  /**
+   *
+   * @param unit
+   * @param weight
+   */
+  from (unit) {
+    if(typeof unit !== 'string'){
+        throw new Error('from(string) please enter a string')
+    }
+    switch (unit) {
+      case 'kg':
+        this.#standardWeightKilos = this.#originalWeight
+        return this
+      case 'g':
+        this.#standardWeightKilos = this.#originalWeight / 1000
+        return this
+      case 'lbs':
+        this.#standardWeightKilos = this.#originalWeight * 0.45359237
+        return this
+      case 'oz':
+        this.#standardWeightKilos = this.#originalWeight / 35.2739619
+        return this
+      default:
+        throw new Error('from(unit) must be a string, kg, g, lbs, oz')
+    }
+  }
+
+  /**
+   *
+   * @param unit
+   */
+  to (unit) {
+    if(typeof unit !== 'string'){
+        throw new Error('to(string) please enter a string')
+    }
+    switch (unit) {
+      case 'kg':
+        return this.#standardWeightKilos
+      case 'g':
+        return this.#standardWeightKilos * 1000
+      case 'lbs':
+
+        return this.#standardWeightKilos / 0.45359237
+      case 'oz':
+
+        return this.#standardWeightKilos * 35.2739619
+      default:
+        throw new Error('to(unit) must be a string, kg, g, lbs, oz')
+    }
+  }
+
+  /**
+   *
+   * @param grams
+   */
+  fromGrams (grams) {
+    if (!Number.isInteger(grams)) {
+      throw new Error('Please enter a number!')
+    }
+    this.#standardWeightKilos = grams / 1000
+
+    return this
+  }
+
+  /**
+   *
+   */
+  toPounds () {
+    const pounds = this.#standardWeightKilos / 0.45359237
+    this.#resetKilos()
+    return pounds
+  }
+
+  /**
+   *
+   */
+  toOunces () {
+    const ounces = this.#standardWeightKilos * 35.2739619
+    this.#resetKilos()
+    return ounces
+  }
+
+  /**
+   *
+   */
+  #resetKilos () {
+    this.#standardWeightKilos = 0
+  }
+
+  // kilometer to miles
+  // miles to kilometer
+
+  // showcalculations?
+  // show lbs, and grams?? breakout to module? blackbox?
+  // import {} if using ecma script module, otherwise?
 
   /** Converts farenheight to celsius.
    *
@@ -39,11 +146,11 @@ export class Converter {
     return fahrenheit
   }
 
-  /** Converts Pounds to kilos
+  /** Converts Pounds to kilos.
    *
    * @param {number} poundsToConvert - Pounds to convert to kilos.
    * @throws {Error} - If the argument is not a number.
-   * @returns {Number}- The number convertet to kilos.
+   * @returns {number}- The number convertet to kilos.
    */
   poundsToKilos (poundsToConvert) {
     if (!Number.isInteger(poundsToConvert)) {
@@ -67,12 +174,21 @@ export class Converter {
     return pounds
   }
 
-  // aounces to ?
-  // ? to aounces
+  /**
+   *
+   * @param ouncesToConvert
+   */
+  ouncesToGrams (ouncesToConvert) {
+    const grams = ouncesToConvert * 28.34952
+    return grams
+  }
 
-  // kilometer to miles
-  // miles to kilometer
-
-  // showcalculations?
-  // import {} if using ecma script module, otherwise?
+  /**
+   *
+   * @param gramsToConvert
+   */
+  gramsToOunces (gramsToConvert) {
+    const ounces = gramsToConvert / 28.34952
+    return ounces
+  }
 }
