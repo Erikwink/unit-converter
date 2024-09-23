@@ -9,9 +9,13 @@ console.log(converter.setWeight(10).from('kg').to('oz'))
 converter.setDecimals(5)
 console.log(converter.setWeight(100).from('kg').to('lbs')) 
 console.log(converter.setWeight(100).from('kg').to('oz')) 
+console.log(converter.getDecimals())
 converter.setDecimals(0)
 console.log(converter.setWeight(100).from('oz').to('lbs')) 
 console.log(converter.setWeight(10).from('oz').to('kg')) 
+console.log(converter.showUnits())
+
+console.log(converter.to('kg'))
 
 
 

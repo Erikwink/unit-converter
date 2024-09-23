@@ -5,6 +5,7 @@ export class Converter {
     #standardWeightKilos = 0
     #originalWeight = 0
     #numberOfDecimals = 0
+    #conversionStarted = false
 
     /** Constructor.
      *
@@ -43,7 +44,7 @@ export class Converter {
      * @param {number} number - The number to adjust. 
      * @returns {number} The adjusted number.
      */
-    checkDecimals(number) {
+    #checkDecimals(number) {
         if (this.#numberOfDecimals === 0 && number >= 1) {
             // check if the number is 0,5 or bigger than return math floor or math ceil???????
             return Math.floor(number)
@@ -104,15 +105,16 @@ export class Converter {
 
     }
 
-    /**
+    /** Determins which unit to convert from.
      *
-     * @param unit
-     * @param weight
+     * @param {string} unit - The unit of messurement.
+     * @returns {class} - The class to make chaining avalable.
      */
     from(unit) {
         if (typeof unit !== 'string') {
             throw new Error('from(string) please enter a string')
         }
+        this.#conversionStarted = true
         switch (unit) {
             case 'kg':
                 this.#standardWeightKilos = this.#originalWeight
@@ -131,34 +133,48 @@ export class Converter {
         }
     }
 
-    /**
+    /** Determins which unit to convert to.
      *
-     * @param unit
+     * @param {string} unit - The unit of messurement.
+     * @returns {number} - The converted number.
      */
     to(unit) {
         if (typeof unit !== 'string') {
             throw new Error('to(string) please enter a string')
         }
+        if(!this.#conversionStarted){
+            throw new Error('You need to call from() before to()')
+        }
+        this.#conversionStarted = false
         let result
         switch (unit) {
             case 'kg':
-                result = this.checkDecimals(this.#standardWeightKilos)
+                result = this.#checkDecimals(this.#standardWeightKilos)
                 return result
             case 'g':
-                result = this.checkDecimals(this.#standardWeightKilos * 1000)
+                result = this.#checkDecimals(this.#standardWeightKilos * 1000)
                 return result
             case 'lbs':
 
-                result = this.checkDecimals(this.#standardWeightKilos / 0.45359237)
+                result = this.#checkDecimals(this.#standardWeightKilos / 0.45359237)
                 return result
             case 'oz':
-                result = this.checkDecimals(this.#standardWeightKilos * 35.2739619)
+                result = this.#checkDecimals(this.#standardWeightKilos * 35.2739619)
                 return result
             default:
                 throw new Error('to(unit) must be a string, kg, g, lbs, oz')
+
         }
     }
 
+    /** Returns the avaliable units.
+     * 
+     * @returns {string} - A string explaining the units avaliable for use.
+     */
+    showUnits() {
+        const Units = [' kg', ' g', ' lbs', ' oz']
+        return (`Units avaliable for conversion are${Units}`)
+    }
     
     // kilometer to miles
     // miles to kilometer
