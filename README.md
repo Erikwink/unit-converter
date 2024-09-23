@@ -19,4 +19,12 @@ kolla decimalsSetByUser satta mot decimalsNeeded för att se vilken som behövs 
 
 fakorera finalDecimals med math.pow för att göra om till heltal och sedan ta bort decimaler för att sedan dividera tillbaks till rätt tal och behålla decimaler. 
 
+## notes
+error fixat om man försöker använda to före/utan from
+använder man endast from händer inget???
+
+standard conversion till kilo, göra till egen modul? bestämma med switch om man ska använda den eller ex kmh mph?
+
+decimals are set to 0, change with setDecimals
+
 // import {} if using ecma script module, otherwise?

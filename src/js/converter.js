@@ -6,6 +6,14 @@ export class Converter {
     #originalWeight = 0
     #numberOfDecimals = 0
     #conversionStarted = false
+    #originalSpeed = 0
+    #standardSpeedInKmh = 0
+    #speedUnits  = {
+        kmh: 'kmh',
+        mph: 'mph',
+        knots: 'knots',
+        ms: 'ms'
+     }
 
     /** Constructor.
      *
@@ -114,6 +122,9 @@ export class Converter {
         if (typeof unit !== 'string') {
             throw new Error('from(string) please enter a string')
         }
+        if(this.#originalWeight <= 0){
+            throw new Error('Please set a weight before perfoming a conversion')
+        }
         this.#conversionStarted = true
         switch (unit) {
             case 'kg':
@@ -167,15 +178,73 @@ export class Converter {
         }
     }
 
+    setSpeed(speed) {
+        this.#originalSpeed = speed
+        return this
+    }
+
+    updatedFrom(unit) {
+        
+        if(unit === this.#speedUnits[unit]){
+            switch(unit){
+                case 'kmh':
+                    this.#standardSpeedInKmh = this.#originalSpeed
+                    return this
+                case 'mph':
+                    this.#standardSpeedInKmh = this.#originalSpeed * 1.609344
+                    return this
+                case 'knots':
+                    this.#standardSpeedInKmh = this.#originalSpeed * 1.85200
+                    return this
+                case 'ms':
+                    this.#standardSpeedInKmh = this.#originalSpeed * 3.6
+                    return this
+            }
+            
+
+        } else {
+            throw new Error(`Unit must be ${Object.values(units)}`)
+        }
+    }
+
+    updatedTo(unit) {
+        let result
+        if(unit === this.#speedUnits[unit]){
+            switch(unit){
+                case 'kmh':
+                    result = this.#checkDecimals(this.#standardSpeedInKmh)
+                    return result
+                case 'mph':
+                    result = this.#checkDecimals(this.#standardSpeedInKmh / 1.609344)
+                    return result
+                case 'knots':
+                    result = this.#checkDecimals(this.#standardSpeedInKmh / 1.85200)
+                    return result
+                case 'ms':
+                    result = this.#checkDecimals(this.#standardSpeedInKmh / 3.6)
+                    return result
+                default: 
+                throw new Error(`Unit must be ${Object.values(this.#speedUnits)}`)
+                   
+            }
+
+        } else {
+            throw new Error(`Unit must be ${Object.values(this.#speedUnits)}`)
+        }
+    }
+
     /** Returns the avaliable units.
      * 
      * @returns {string} - A string explaining the units avaliable for use.
      */
     showUnits() {
         const Units = [' kg', ' g', ' lbs', ' oz']
-        return (`Units avaliable for conversion are${Units}`)
+        return (`Units avaliable for conversion are${Units} and ${Object.values(this.#speedUnits)}`)
     }
     
+    // hur bryta ut omvandligen för att applicera på fler olika mått???
+
+
     // kilometer to miles
     // miles to kilometer
 
