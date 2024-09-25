@@ -7,14 +7,12 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-      "lint": "npx eslint ./src || exit 0",
+    "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0"
   },
   "author": "Erik Wink",
   "license": "ISC",
-  "dependencies": {
-  },
   "devDependencies": {
-    "@lnu/eslint-config": "^1.1.5"
+    "@lnu/eslint-config": "^1.1.10"
   }
 }
