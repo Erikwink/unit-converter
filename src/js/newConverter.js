@@ -9,6 +9,7 @@ import { TemperatureConverter } from './units/temperatureConverter.js'
 // 4. RETURN this for value to able chaining
 // 5. lowercase uppercase in names in converters??
 // 6. decimals when number is negative
+// 7. naming???
 
 /** Class representing a converter. */
 export class NewConverter {
@@ -20,7 +21,7 @@ export class NewConverter {
   // flags
   // TODOD flags
   // AVRUNDNING I DECIAMLER? 0.5
-  #returnString
+  #returnString = false
   #showCalculation
   /** The constructor.
    *
@@ -77,7 +78,13 @@ export class NewConverter {
 
     const converter = this.#converters[fromType]
     const standardValue = converter.toStandard(this.#value, from)
-    return this.#checkDecimals(converter.fromStandard(standardValue, to))
+
+    if (this.#returnString === true) {
+      const result = this.#checkDecimals(converter.fromStandard(standardValue, to))
+      return converter.toString(result, to)
+    } else {
+      return this.#checkDecimals(converter.fromStandard(standardValue, to))
+    }
   }
 
   /** Sets the amount of decimals.
@@ -147,5 +154,19 @@ export class NewConverter {
     // Factor the number to remove decimals
     const factor = Math.pow(10, finalDecimals)
     return Math.floor(number * factor) / factor
+  }
+
+  /** Determins if the return value should be a string.
+   *
+   * @returns {boolean} - The return value as a string.
+   */
+  setStringMode () {
+    if (this.#returnString) {
+      this.#returnString = false
+    } else {
+      this.#showCalculation = false
+      this.#returnString = true
+    }
+    return this.#returnString
   }
 }

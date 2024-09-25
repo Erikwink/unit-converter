@@ -1,18 +1,15 @@
-import { Converter } from './src/js/converter.js'
 import { NewConverter } from './src/js/newConverter.js'
 // eslint-disable-next-line no-unused-vars
-const converter = new Converter()
 
 try {
   const newConverter = new NewConverter()
   newConverter.setValue(20)
- /*  newConverter.setDecimals(0) */
-  /* console.log(newConverter.convert('kg', 'lbs'))
+  newConverter.setDecimals(0)
+  console.log(newConverter.setStringMode())
+  console.log(newConverter.convert('kg', 'lbs'))
   console.log(newConverter.convert('kg', 'oz'))
-  newConverter.setDecimals(1)
   console.log(newConverter.convert('kmh', 'ms'))
-  console.log(newConverter.setValue(100).convert('kmh', 'ms')) */
-
+  console.log(newConverter.setValue(100).convert('kmh', 'ms'))
   console.log(newConverter.setValue(100).convert('kelvin', 'celsius'))
   console.log(newConverter.setValue(100).convert('fahrenheit', 'kelvin'))
 

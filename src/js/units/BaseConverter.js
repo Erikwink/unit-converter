@@ -18,7 +18,6 @@ export class BaseConverter {
     if (!this.units[unit]) {
       throw new Error(`toStandard Unsupported unit: ${unit}`)
     }
-    console.log(value, '*', this.units[unit].toStandardMessure)
     return value * this.units[unit].toStandardMessure // Omvandla till standardenheten
   }
 
@@ -32,7 +31,6 @@ export class BaseConverter {
     if (!this.units[unit]) {
       throw new Error(`Unsupported unit: ${unit}`)
     }
-    console.log(value, '/', this.units[unit].toStandardMessure)
     return value / this.units[unit].toStandardMessure // Omvandla från standardenhet till enhet
   }
 
