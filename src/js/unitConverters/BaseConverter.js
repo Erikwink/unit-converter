@@ -1,4 +1,4 @@
-/** Class representing a base converter. */
+/** Base class for a converter */
 export class BaseConverter {
   /** The constructor.
    *
@@ -6,6 +6,7 @@ export class BaseConverter {
    */
   constructor (units) {
     this.units = units
+    this.calulationSteps = []
   }
 
   /** Converts the value to the standard unit.
@@ -15,10 +16,15 @@ export class BaseConverter {
    * @returns {number} - The converted number.
    */
   toStandard (value, unit) {
+    this.calulationSteps = []
     if (!this.units[unit]) {
       throw new Error(`toStandard Unsupported unit: ${unit}`)
     }
-    return value * this.units[unit].toStandardMessure // Omvandla till standardenheten
+    const result = value * this.units[unit].toStandardMessure
+    this.calulationSteps.push(
+      `${value} * ${this.units[unit].toStandardMessure} ${unit} = ${result} `
+    )
+    return result
   }
 
   /** Converts the value from the standard unit.
@@ -31,7 +37,11 @@ export class BaseConverter {
     if (!this.units[unit]) {
       throw new Error(`Unsupported unit: ${unit}`)
     }
-    return value / this.units[unit].toStandardMessure // Omvandla från standardenhet till enhet
+    const result = value / this.units[unit].toStandardMessure
+    this.calulationSteps.push(
+      `(${value} / ${this.units[unit].toStandardMessure})`
+    )
+    return result
   }
 
   /** Gets the units names.
@@ -58,5 +68,17 @@ export class BaseConverter {
    */
   toString (value, unit) {
     return `${value} ${unit}`
+  }
+
+  /** Gets the calculation steps.
+   *
+   * @param {number} calculatedValue - The calculated value.
+   * @param {string} unit - The unit.
+   * @returns {string} - The calculation steps.
+   */
+  getCalculationSteps (calculatedValue, unit) {
+    this.calulationSteps.push(`The result is: ${calculatedValue} ${unit}`)
+    this.calulationSteps.push('---------------------------------')
+    return this.calulationSteps.join('\n')
   }
 }

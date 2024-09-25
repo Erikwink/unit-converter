@@ -1,64 +1,90 @@
-/** A Class which converts different units of messurment.
- *
- */
-export class Converter {
-  #standardWeightKilos = 0
-  #originalWeight = 0
-  #numberOfDecimals = 0
+import { WeightConverter } from './unitConverters/WeightConverter.js'
+import { SpeedConverter } from './unitConverters/SpeedConverter.js'
+import { TemperatureConverter } from './unitConverters/temperatureConverter.js'
 
-  #conversionStarted = false
-  #calculationString = ''
+// TODOS
+// 2. Add error handling for input
+// 5. lowercase uppercase in names in converters??
+// 6. decimals when number is negative
+// 7. naming???
+// 8. ovveride temperatture converter calculations
+// 9. när man skapar en ny converter måste objektet heta samma som name i convertern
+
+/** Class representing a converter. */
+export class Converter {
+  // add comments here
+  #value
+  #unitMap = {}
+  #converters = {}
+  #numberOfDecimals
 
   // flags
+  // AVRUNDNING I DECIAMLER? 0.5
   #returnString = false
   #showCalculation = false
-
-  #numberConvertedToStandardMessure
-  #numberToConvert = 0
-  #speedUnits = {
-    kmh: {
-      name: 'kmh',
-      toStandardMessure: 1
-    },
-    mph: {
-      name: 'mph',
-      toStandardMessure: 1 * 1.609344
-    },
-    knots: {
-      name: 'knots',
-      toStandardMessure: 1 * 1.85200
-    },
-    ms: {
-      name: 'ms',
-      toStandardMessure: 1 * 3.6
-    }
-  }
-
-  #weightUnits = {
-    kg: {
-      name: 'kg',
-      toStandardMessure: 1
-    },
-    g: {
-      name: 'g',
-      toStandardMessure: 1 / 1000
-    },
-    lbs: {
-      name: 'lbs',
-      toStandardMessure: 1 * 0.45359237
-    },
-    oz: {
-      name: 'oz',
-      toStandardMessure: 1 / 35.2739619
-    }
-
-  }
-
-  /** Constructor.
+  /** The constructor.
    *
    */
   constructor () {
+    const converterInstances = [
+      new WeightConverter(),
+      new SpeedConverter(),
+      new TemperatureConverter()
+    ]
+    // TODO error ifall flera heter samma??
+    // Build unitMap and converters dynamically
+    converterInstances.forEach((converter) => {
+      const unitType = converter.getUnitsName()
 
+      if (this.#converters[unitType]) {
+        throw new Error(`Duplicate unit type: ${unitType}`)
+      }
+      // Store the converter by its type
+      this.#converters[unitType] = converter
+
+      // Map each unit to its type (e.g., kg -> "weight")
+
+      converter.getUnitTypes().forEach((unit) => {
+        this.#unitMap[unit] = unitType
+      })
+    })
+  }
+
+  /** Sets the number to convert.
+   *
+   * @param {number} value - The number to convert
+   * @returns {object} - The object to chain
+   */
+  setValue (value) {
+    this.#value = value
+    return this
+  }
+
+  /** Passes the units to convert to the correct converter.
+   *
+   * @param {string} fromUnit - The unit t oconvert from.
+   * @param {string} toUnit - The unit to convert to.
+   * @returns {number} - The converted number.
+   */
+  convert (fromUnit, toUnit) {
+    const fromType = this.#unitMap[fromUnit]
+    const toType = this.#unitMap[toUnit]
+
+    // Check if both units are handled by the same converter type
+    if (fromType !== toType) {
+      throw new Error(`Cannot convert between ${fromUnit} and ${toUnit}`)
+    }
+
+    const converter = this.#converters[fromType]
+    const standardValue = converter.toStandard(this.#value, fromUnit)
+    const result = this.#checkDecimals(converter.fromStandard(standardValue, toUnit))
+    if (this.#returnString) {
+      return converter.toString(result, toUnit)
+    } else if (this.#showCalculation) {
+      return converter.getCalculationSteps(result, toUnit)
+    } else {
+      return result
+    }
   }
 
   /** Sets the amount of decimals.
@@ -73,9 +99,9 @@ export class Converter {
     }
   }
 
-  /** Gets the amount of decimals the converter is set to.
+  /** Gets the number of decimals the converter is set to.
    *
-   * @returns The amount of decimals the converter is set to.
+   * @returns {number} - The number of decimals the converter is set to.
    */
   getDecimals () {
     return this.#numberOfDecimals
@@ -130,178 +156,33 @@ export class Converter {
     return Math.floor(number * factor) / factor
   }
 
-  /** Set the starting weight for the Conversion
+  /** Determins if the return value should be a string.
    *
-   * @param {number} weight
-   * @returns {object} - this object for chaning to work.
+   * @param {boolean} boolean - The boolean to determine if the return value should be a string.
    */
-  setWeight (weight) {
-    if (!Number(weight) || weight < 0) {
-      throw new Error('Weight must be a number bigger then 0')
-    }
-    this.#originalWeight = weight
-    return this
-  }
-
-  /** Determins which unit to convert from.
-   *
-   * @param {string} unit - The unit of messurement.
-   * @returns {object} - The class to make chaining avalable.
-   */
-  from (unit) {
-    if (typeof unit !== 'string') {
-      throw new Error('from(string) please enter a string')
-    }
-    if (this.#originalWeight <= 0) {
-      throw new Error('Please set a weight before perfoming a conversion')
-    }
-    this.#conversionStarted = true
-    switch (unit) {
-      case 'kg':
-        this.#standardWeightKilos = this.#originalWeight
-        return this
-      case 'g':
-        this.#standardWeightKilos = this.#originalWeight / 1000
-        return this
-      case 'lbs':
-        this.#standardWeightKilos = this.#originalWeight * 0.45359237
-        return this
-      case 'oz':
-        this.#standardWeightKilos = this.#originalWeight / 35.2739619
-        return this
-      default:
-        throw new Error('from(unit) must be a string, kg, g, lbs, oz')
-    }
-  }
-
-  /** Determins which unit to convert to.
-   *
-   * @param {string} unit - The unit of messurement.
-   * @returns {number} - The converted number.
-   */
-  to (unit) {
-    if (typeof unit !== 'string') {
-      throw new Error('to(string) please enter a string')
-    }
-    if (!this.#conversionStarted) {
-      throw new Error('You need to call from() before to()')
-    }
-    this.#conversionStarted = false
-    let result
-    switch (unit) {
-      case 'kg':
-        result = this.#checkDecimals(this.#standardWeightKilos)
-        return result
-      case 'g':
-        result = this.#checkDecimals(this.#standardWeightKilos * 1000)
-        return result
-      case 'lbs':
-
-        result = this.#checkDecimals(this.#standardWeightKilos / 0.45359237)
-        return result
-      case 'oz':
-        result = this.#checkDecimals(this.#standardWeightKilos * 35.2739619)
-        return result
-      default:
-        throw new Error('to(unit) must be a string, kg, g, lbs, oz')
-    }
-  }
-
-  /**
-   *
-   * @param number
-   */
-  setNumber (number) {
-    this.#numberToConvert = number
-    return this
-  }
-
-  /**
-   *
-   * @param unit
-   */
-  testFrom (unit) {
-    this.#conversionStarted = true
-
-    if (unit = this.#speedUnits[unit] || (unit = this.#weightUnits[unit])) {
-      if (this.#showCalculation) {
-        this.#calculationString = ''
-        this.#calculationString = this.#calculationString.concat(this.#numberToConvert, unit.name, ' * ', unit.toStandardMessure, ' =')
-      }
-      this.#numberConvertedToStandardMessure = this.#numberToConvert * unit.toStandardMessure
-
-      return this
-    }
-  }
-
-  /**
-   *
-   * @param unit
-   */
-  testTo (unit) {
-    if (!this.#conversionStarted) {
-      this.#conversionStarted = false
-      throw new Error('must call from before to')
-    }
-    if (unit = this.#speedUnits[unit] || (unit = this.#weightUnits[unit])) {
-      let result = this.#checkDecimals(this.#numberConvertedToStandardMessure / unit.toStandardMessure)
-      if (this.#returnString) {
-        return result = `${result} ${unit.name}`
-      } else if (this.#showCalculation) {
-        this.#calculationString = this.#calculationString.concat('\n', this.#numberConvertedToStandardMessure, ' / ', unit.toStandardMessure, ' =\n', result, unit.name)
-        return this.#calculationString
-      } else {
-        return result
-      }
-    }
-  }
-
-  /**
-   *
-   */
-  #createCalculationString () {
-
-  }
-
-  /**
-   *
-   */
-  returnString () {
-    if (this.#returnString) {
-      this.#returnString = false
-    } else {
+  toggleStringMode (boolean) {
+    if (boolean === true) {
       this.#showCalculation = false
       this.#returnString = true
+    } else if (boolean === false) {
+      this.#returnString = false
+    } else {
+      throw new Error('toggleStringMode only accepts true or false')
     }
-    return this.#returnString
   }
 
-  /**
+  /** Determins if the calculations should be shown.
    *
+   * @param {boolean} boolean - The boolean to determine if the calculations should be shown.
    */
-  showCalculations () {
-    if (this.#showCalculation) {
-      this.#showCalculation = false
-    } else {
+  toggleShowCalculations (boolean) {
+    if (boolean) {
       this.#returnString = false
       this.#showCalculation = true
+    } else if (boolean === false) {
+      this.#showCalculation = false
+    } else {
+      throw new Error('toggleCalculations only accepts true or false')
     }
-    return this.#showCalculation
   }
-
-  /** Returns the avaliable units.
-   *
-   * @returns {string} - A string explaining the units avaliable for use.
-   */
-  showUnits () {
-    // appenda whitespace mellan varje key????????????
-    return (`Units avaliable for conversion are ${Object.keys(this.#weightUnits)} and ${Object.keys(this.#speedUnits)}`)
-  }
-
-  // hur bryta ut omvandligen för att applicera på fler olika mått???
-
-  // kilometer to miles
-  // miles to kilometer
-
-  // showcalculations? olika flaggor som gör så att man får string tillbaka eller uträkning eller number
 }
