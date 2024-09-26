@@ -6,6 +6,7 @@ import { TemperatureConverter } from './unitConverters/temperatureConverter.js'
 // 6. decimals when number is negative
 // 7. naming???
 // 9. när man skapar en ny converter måste objektet heta samma som name i convertern
+// 10. rewrite override in temeprature to a case switch, och uppdatera readme
 
 /** Class representing a converter. */
 export class Converter {

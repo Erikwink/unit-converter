@@ -26,13 +26,13 @@ set in your package.json
 ### Basic usage
 unit-converter allows for method chaing with the setValue method.
 ```javascript
-converter.setvalue(10).convert('kg','lbs') // 22.04
+converter.setvalue(10).convert('kg','lbs') // Returns 22.04
 ```
 Or you can just set a value and the converter will use that value untill you change it again. 
 ```javascript
 converter.setValue(20)
-converter.convert('kg','lbs') // 44.09
-converter.convert('fahrenheit','celsius') // -6.67
+converter.convert('kg','lbs') // Returns 44.09
+converter.convert('fahrenheit','celsius') // Returns -6.67
 ```
 
 ### Decimals
@@ -42,9 +42,9 @@ converter.setDecimals(5)
 ```
 You can retrieve the current decimal setting using getDecimals()
 ```javascript
-converter.getDecimals(); // 5
+converter.getDecimals(); Returns // 5
 ```
-### Output formats
+### Units
 Public method getUnits() will show you the possible conversions.
 ```javascript
 console.log(converter.getUnits())
@@ -54,10 +54,17 @@ console.log(converter.getUnits())
 //  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
 //}
 ```
+Dont try to make conversion between different units!
+```javascript
+converter.setValue(20).convert('kg', 'kmh') // Throws Cannot convert between kg and kmh
+```
+
+### Output formats
 By default, the converter returns a number. But you can switch the output to either a string with units or a full calculation by using:
 ```javascript
-converter.calculationMode(true) // 44.09 lbs
+converter.calculationMode(true) // Returns 44.09 lbs
 converter.stringMode(true) 
+// Returns
 // 20 * 1 kg = 20
 // (20 / 0.45359237)
 // The result is: 44.09 lbs
@@ -82,8 +89,115 @@ converter.stringMode(true)
 
 ## dependecies
 ## version
+Version 1.0
 ## bugs
 ## contributions
+We welcome contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
+
+1. Fork and Clone the Repository
+First, fork the repository and clone it to your local development environment:
+
+```bash
+git clone https://github.com/Erikwink/unit-converter.git
+```
+2. Create a New Converter Class
+All converters should extend the BaseConverter class and follow the same structure. For example, if you're adding a converter for length you would do something like this:
+
+```javascript
+
+import { BaseConverter } from './BaseConverter.js';
+
+/** Class representing a length converter */
+export class LengthConverter extends BaseConverter {
+  constructor() {
+    super({
+      formOfUnits: 'length',
+      m: { name: 'm', toStandardMessure: 1 },
+      km: { name: 'km', toStandardMessure: 1000 },
+      mile: { name: 'mile', toStandardMessure: 1609.34 },
+      // Add more units here
+    });
+  }
+}
+```
+3. Register Your Converter
+In the Converter class (Converter.js), you need to import and add your new converter so it can be used.
+
+```javascript
+
+import { LengthConverter } from './unitConverters/LengthConverter.js';
+
+export class Converter {
+  constructor() {
+    const converterInstances = [
+      new WeightConverter(),
+      new SpeedConverter(),
+      new TemperatureConverter(),
+      new LengthConverter()  // Add your converter here
+    ]
+
+  }
+}
+```
+4. Make sure to test, document and follow the code style in your classes before submiting a push request. See tests for details.
+
+5. ### Special cases.
+if your converter doesn't follow the same pattern for conversion you might have to ovveride the methods in the class. see example
+```javascript
+/** Class representing a temperature converter. */
+export class TemperatureConverter extends BaseConverter {
+  /** The constructor.
+   *
+   */
+  constructor () {
+    super({
+      formOfUnits: 'temperature',
+      celsius: {
+        name: 'celsius',
+        toStandardMessure: 1,
+        offset: 0
+      },
+      fahrenheit: {
+        name: 'fahrenheit',
+        toStandardMessure: 1.8,
+        offset: 32
+      },
+      kelvin: {
+        name: 'kelvin',
+        toStandardMessure: 1,
+        offset: 273.15
+      }
+    })
+  }
+
+  /** Override the toStandard method to handle Kelvin separately.
+   *
+   * @param {number} value - The value to convert.
+   * @param {string} unit - The unit to convert.
+   * @returns {number} - The converted number.
+   */
+  toStandardUnit (value, unit) {
+    this.calulationSteps = []
+    const unitData = this.units[unit]
+    if (!unitData) {
+      throw new Error(`Unsupported unit: ${unit}`)
+    }
+
+    if (unit === 'kelvin') {
+      this.calulationSteps.push(`${value} - ${unitData.offset}`)
+      return value - unitData.offset
+    } else if (unit === 'fahrenheit') {
+      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.toStandardMessure}`)
+      return (value - unitData.offset) / unitData.toStandardMessure
+    } else {
+      this.calulationSteps.push(`${value} * ${unitData.toStandardMessure}`)
+      return value * unitData.toStandardMessure
+    }
+  }
+
+```
+
+
 ## contact
 ## license
 
@@ -122,10 +236,6 @@ INTE SKRIVA KOD TILL SIG SJÄLV UTAN TILL ANDRA!!!!
 INTE KOMMENTERA VAD KODEN GÖR... EX IF EQUAL DOES THIS....
 
 ju mer man klurar på problemet ju simplare blir det.... gångra allt till ett standarmått för att sedan dela med det konverterade numret, väldigt mycket simplare
-
-decimals are set to 0, change with setDecimals
-
-// import {} if using ecma script module, otherwise?
 
 ## att ha med 
 1 installation, hur man ska installera paketet, använd standardsätt?

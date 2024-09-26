@@ -8,6 +8,7 @@ try {
   console.log(converter.setValue(20).convert('kg', 'lbs'))
   converter.calculationMode(true)
   console.log(converter.setValue(20).convert('kg', 'lbs'))
+  console.log(converter.setValue(20).convert('kg', 'kmh'))
 
   /* newConverter.setValue(20)
 
