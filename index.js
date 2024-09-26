@@ -2,8 +2,14 @@ import { Converter } from './src/js/Converter.js'
 export { Converter }
 
 try {
-  const newConverter = new Converter()
-  newConverter.setValue(20)
+  const converter = new Converter()
+  console.log(converter.setValue(10).convert('kg', 'lbs'))
+  converter.stringMode(true)
+  console.log(converter.setValue(20).convert('kg', 'lbs'))
+  converter.calculationMode(true)
+  console.log(converter.setValue(20).convert('kg', 'lbs'))
+
+  /* newConverter.setValue(20)
 
   newConverter.calculationMode(false)
   console.log(newConverter.convert('oz', 'lbs'))
@@ -22,7 +28,7 @@ try {
   console.log(newConverter.setValue(100).convert('kmh', 'ms'))
   console.log(newConverter.setValue(100).convert('kelvin', 'celsius'))
   console.log(newConverter.setValue(100).convert('fahrenheit', 'kelvin'))
-  console.log(newConverter.getUnits())
+  console.log(newConverter.getUnits()) */
 } catch (error) {
   console.log(error.message)
 }
