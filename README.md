@@ -4,37 +4,79 @@ A chainable unit converter for weight, speed, and temperature. Allows for conver
 
 ## 1. Installation
 
-You can install the package directly from GitHub:
+You can install the package directly from GitHub.
 
 ```bash
 npm install github:Erikwink/unit-converter
+```
 
-import { converter } from 'unit-converter'
 ## usage
-instaciate a new object using new Converter()
-unit-converter allows for chaing with the setValue method
+```javascript
+import { converter } from 'unit-converter'
+const converter = new Converter()
+```
+make sure you have: 
+```javascript
+"type": "module"
+```
+set in your package.json
+
+
+unit-converter allows for method chaing with the setValue method.
+```javascript
 converter.setvalue(10).convert('kg','lbs')
-or you can just set a value and the converter will use that value for untill you change it again. converter.setValue(10)
+```
+Or you can just set a value and the converter will use that value untill you change it again. 
+```javascript
+converter.setValue(10)
+converter.convert('kg','lbs') // convert to pounds
+converter.convert('fahrenheit','celsius') // convert to celsius
+```
 
-You can set the amount of decimals you want with the setDecimals()
-standard is 2 decimals
-you can also use getDecimals() to see what the converter is set to
+You can set the number of decimals with the setDecimals(). Default is 2 decimals.
+```javascript
+converter.setDecimals(5)
+```
+You can retrieve the current decimal setting using getDecimals()
+```javascript
+converter.getDecimals(); // 5
+```
 
-Public method getUnits() will show you the possible conversions
-// {
-  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
-  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
-  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
-}
-
-you can switch between getting a number in return or a string with unit, or the calculation.
-standard is number, and the by setting stringMode(true) or calculationMode(true) you can change the desired output.
+Public method getUnits() will show you the possible conversions.
+```javascript
+console.log(converter.getUnits())
+//{
+//  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
+//  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
+//  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
+//}
+```
+By default, the converter returns a number. But you can switch the output to either a string with units or a full calculation by using:
+```javascript
+converter.calculationMode(true) // Returns 22 pounds as a string
+converter.stringMode(true) 
+// 20 * 1 kg = 20
+//(20 / 0.02834952316484755)
+// The result is: 705.4 oz
+```
 
 ## methods
 ## supported units
-  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
-  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
-  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
+### weight:
+* 'kg'
+* 'g'
+* 'lbs'
+* 'oz'
+* 'ton' 
+### speed:
+* 'kmh'
+* 'mph'
+* 'knots'
+* 'ms' 
+### temperature:
+* 'celsius'
+* 'fahrenheit'
+* 'kelvin'
 
 ## dependecies
 ## version
