@@ -1,10 +1,47 @@
-## installation
+# Unit Converter
+
+A chainable unit converter for weight, speed, and temperature. Allows for conversions between multiple units, handling various output formats (numbers, strings, or calculations) and custom decimal precision.
+
+## 1. Installation
+
+You can install the package directly from GitHub:
+
+```bash
 npm install github:Erikwink/unit-converter
+
 import { converter } from 'unit-converter'
-standard exports use { Converter }
-## methods
 ## usage
+instaciate a new object using new Converter()
+unit-converter allows for chaing with the setValue method
+converter.setvalue(10).convert('kg','lbs')
+or you can just set a value and the converter will use that value for untill you change it again. converter.setValue(10)
+
+You can set the amount of decimals you want with the setDecimals()
+standard is 2 decimals
+you can also use getDecimals() to see what the converter is set to
+
+Public method getUnits() will show you the possible conversions
+// {
+  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
+  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
+  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
+}
+
+you can switch between getting a number in return or a string with unit, or the calculation.
+standard is number, and the by setting stringMode(true) or calculationMode(true) you can change the desired output.
+
+## methods
+## supported units
+  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
+  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
+  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
+
 ## dependecies
+## version
+## bugs
+## contributions
+## contact
+## license
 
 ## ändringar efter läsning
 toStandard blev toStandardUnit desciptiv names, kan förstå det direkt, samma med fromStandard
@@ -33,7 +70,7 @@ fakorera finalDecimals med math.pow för att göra om till heltal och sedan ta b
 ## fixes
 
 ## notes
-
+set value or setvalue()?????????
 
 få med associations till convertersarna i documentering
 

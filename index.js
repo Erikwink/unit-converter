@@ -4,8 +4,8 @@ export { Converter }
 try {
   const newConverter = new Converter()
   newConverter.setValue(20)
-  newConverter.setDecimals(200)
-  newConverter.toggleShowCalculations(false)
+
+  newConverter.calculationMode(false)
   console.log(newConverter.convert('oz', 'lbs'))
   console.log(newConverter.convert('kg', 'oz'))
   console.log(newConverter.convert('kmh', 'ms'))
@@ -15,7 +15,7 @@ try {
   console.log('------------------')
   newConverter.setValue(20)
   newConverter.setDecimals(1)
-  newConverter.toggleShowCalculations(false)
+  newConverter.calculationMode(false)
   console.log(newConverter.convert('oz', 'lbs'))
   console.log(newConverter.convert('kg', 'oz'))
   console.log(newConverter.convert('kmh', 'ms'))

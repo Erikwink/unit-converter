@@ -164,7 +164,7 @@ export class Converter {
    *
    * @param {boolean} boolean - The boolean to determine if the return value should be a string.
    */
-  toggleStringMode (boolean) {
+  stringMode (boolean) {
     if (boolean === true) {
       this.#showCalculation = false
       this.#returnString = true
@@ -175,11 +175,11 @@ export class Converter {
     }
   }
 
-  /** Determins if the calculations should be shown.
+  /** Determins if the calculations should be returned.
    *
    * @param {boolean} boolean - The boolean to determine if the calculations should be shown.
    */
-  toggleShowCalculations (boolean) {
+  calculationMode (boolean) {
     if (boolean) {
       this.#returnString = false
       this.#showCalculation = true
