@@ -4,7 +4,7 @@ try {
   const newConverter = new Converter()
   newConverter.setValue(20)
   newConverter.setDecimals(5)
-  newConverter.toggleShowCalculations(false)
+  newConverter.toggleShowCalculations(true)
   console.log(newConverter.convert('oz', 'lbs'))
   console.log(newConverter.convert('kg', 'oz'))
   console.log(newConverter.convert('kmh', 'ms'))

@@ -3,7 +3,6 @@ import { SpeedConverter } from './unitConverters/SpeedConverter.js'
 import { TemperatureConverter } from './unitConverters/temperatureConverter.js'
 
 // TODOS
-// 2. Add error handling for input
 // 5. lowercase uppercase in names in converters??
 // 6. decimals when number is negative
 // 7. naming???
@@ -56,6 +55,9 @@ export class Converter {
    * @returns {object} - The object to chain
    */
   setValue (value) {
+    if (!Number(value)) {
+      throw new Error('Value needs to be a number')
+    }
     this.#value = value
     return this
   }
@@ -67,6 +69,9 @@ export class Converter {
    * @returns {number} - The converted number.
    */
   convert (fromUnit, toUnit) {
+    if (typeof fromUnit !== 'string' || typeof toUnit !== 'string') {
+      throw new Error('units needs to be strings')
+    }
     const fromType = this.#unitMap[fromUnit]
     const toType = this.#unitMap[toUnit]
 

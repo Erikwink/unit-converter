@@ -33,16 +33,20 @@ export class TemperatureConverter extends BaseConverter {
    * @returns {number} - The converted number.
    */
   toStandard (value, unit) {
+    this.calulationSteps = []
     const unitData = this.units[unit]
     if (!unitData) {
       throw new Error(`Unsupported unit: ${unit}`)
     }
 
     if (unit === 'kelvin') {
+      this.calulationSteps.push(`${value} - ${unitData.offset}`)
       return value - unitData.offset
     } else if (unit === 'fahrenheit') {
+      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.toStandardMessure}`)
       return (value - unitData.offset) / unitData.toStandardMessure
     } else {
+      this.calulationSteps.push(`${value} * ${unitData.toStandardMessure}`)
       return value * unitData.toStandardMessure
     }
   }
@@ -60,10 +64,13 @@ export class TemperatureConverter extends BaseConverter {
     }
 
     if (unit === 'kelvin') {
+      this.calulationSteps.push(`${value} + ${unitData.offset}`)
       return value + unitData.offset
     } else if (unit === 'fahrenheit') {
+      this.calulationSteps.push(`(${value} * ${unitData.toStandardMessure}) + ${unitData.offset}`)
       return (value * unitData.toStandardMessure) + unitData.offset
     } else {
+      this.calulationSteps.push(`${value} / ${unitData.toStandardMessure}`)
       return value / unitData.toStandardMessure
     }
   }
