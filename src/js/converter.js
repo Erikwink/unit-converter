@@ -3,19 +3,20 @@ import { SpeedConverter } from './unitConverters/SpeedConverter.js'
 import { TemperatureConverter } from './unitConverters/temperatureConverter.js'
 
 // TODOS
-// 5. lowercase uppercase in names in converters??
 // 6. decimals when number is negative
 // 7. naming???
-// 8. ovveride temperatture converter calculations
 // 9. när man skapar en ny converter måste objektet heta samma som name i convertern
 
 /** Class representing a converter. */
 export class Converter {
-  // add comments here
-  #value
+  /** The value to convert. */
+  #value = 0
+  /** An object mapping the units to the correct converter. */
   #unitMap = {}
+  /** An object with the converters. */
   #converters = {}
-  #numberOfDecimals
+  /** The number of decimals to display. */
+  #numberOfDecimals = 2
 
   // flags
   // AVRUNDNING I DECIAMLER? 0.5
@@ -30,7 +31,6 @@ export class Converter {
       new SpeedConverter(),
       new TemperatureConverter()
     ]
-    // TODO error ifall flera heter samma??
     // Build unitMap and converters dynamically
     converterInstances.forEach((converter) => {
       const unitType = converter.getUnitsName()
@@ -42,7 +42,6 @@ export class Converter {
       this.#converters[unitType] = converter
 
       // Map each unit to its type (e.g., kg -> "weight")
-
       converter.getUnitTypes().forEach((unit) => {
         this.#unitMap[unit] = unitType
       })
@@ -70,7 +69,7 @@ export class Converter {
    */
   convert (fromUnit, toUnit) {
     if (typeof fromUnit !== 'string' || typeof toUnit !== 'string') {
-      throw new Error('units needs to be strings')
+      throw new Error('units needs to be strings, Ex "kg" or "lbs"')
     }
     const fromType = this.#unitMap[fromUnit]
     const toType = this.#unitMap[toUnit]
@@ -81,8 +80,8 @@ export class Converter {
     }
 
     const converter = this.#converters[fromType]
-    const standardValue = converter.toStandard(this.#value, fromUnit)
-    const result = this.#checkDecimals(converter.fromStandard(standardValue, toUnit))
+    const standardValue = converter.toStandardUnit(this.#value, fromUnit)
+    const result = this.#checkDecimals(converter.fromStandardUnit(standardValue, toUnit))
     if (this.#returnString) {
       return converter.toString(result, toUnit)
     } else if (this.#showCalculation) {
@@ -189,5 +188,20 @@ export class Converter {
     } else {
       throw new Error('toggleCalculations only accepts true or false')
     }
+  }
+
+  /** Gets the units names.
+   *
+   * @returns {object} - An object with the units names.
+   */
+  getUnits () {
+    const units = {}
+    for (const [unit, type] of Object.entries(this.#unitMap)) {
+      if (!units[type]) {
+        units[type] = []
+      }
+      units[type].push(unit)
+    }
+    return units
   }
 }

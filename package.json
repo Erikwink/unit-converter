@@ -1,7 +1,7 @@
 {
-  "name": "l2-for-1dv610",
+  "name": "unit-converter",
   "version": "1.0.0",
-  "description": "task L2",
+  "description": "A module for converting between different units.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "lint:fix": "npx eslint ./src --fix || exit 0"
   },
   "author": "Erik Wink",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@lnu/eslint-config": "^1.1.10"
   }

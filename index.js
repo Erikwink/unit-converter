@@ -1,16 +1,28 @@
 import { Converter } from './src/js/Converter.js'
+export { Converter }
 
 try {
   const newConverter = new Converter()
   newConverter.setValue(20)
-  newConverter.setDecimals(5)
-  newConverter.toggleShowCalculations(true)
+  newConverter.setDecimals(200)
+  newConverter.toggleShowCalculations(false)
   console.log(newConverter.convert('oz', 'lbs'))
   console.log(newConverter.convert('kg', 'oz'))
   console.log(newConverter.convert('kmh', 'ms'))
   console.log(newConverter.setValue(100).convert('kmh', 'ms'))
   console.log(newConverter.setValue(100).convert('kelvin', 'celsius'))
   console.log(newConverter.setValue(100).convert('fahrenheit', 'kelvin'))
+  console.log('------------------')
+  newConverter.setValue(20)
+  newConverter.setDecimals(1)
+  newConverter.toggleShowCalculations(false)
+  console.log(newConverter.convert('oz', 'lbs'))
+  console.log(newConverter.convert('kg', 'oz'))
+  console.log(newConverter.convert('kmh', 'ms'))
+  console.log(newConverter.setValue(100).convert('kmh', 'ms'))
+  console.log(newConverter.setValue(100).convert('kelvin', 'celsius'))
+  console.log(newConverter.setValue(100).convert('fahrenheit', 'kelvin'))
+  console.log(newConverter.getUnits())
 } catch (error) {
   console.log(error.message)
 }

@@ -1,4 +1,6 @@
 src/js/oldconverter.js
+.eslintrc.json
+index.html
 
 # Snowpack
 .build

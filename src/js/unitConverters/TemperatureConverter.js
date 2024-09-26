@@ -32,7 +32,7 @@ export class TemperatureConverter extends BaseConverter {
    * @param {string} unit - The unit to convert.
    * @returns {number} - The converted number.
    */
-  toStandard (value, unit) {
+  toStandardUnit (value, unit) {
     this.calulationSteps = []
     const unitData = this.units[unit]
     if (!unitData) {
@@ -57,7 +57,7 @@ export class TemperatureConverter extends BaseConverter {
    * @param {string} unit - The unit to convert.
    * @returns {number} - The converted number.
    */
-  fromStandard (value, unit) {
+  fromStandardUnit (value, unit) {
     const unitData = this.units[unit]
     if (!unitData) {
       throw new Error(`Unsupported unit: ${unit}`)

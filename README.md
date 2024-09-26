@@ -1,3 +1,15 @@
+## installation
+npm install github:Erikwink/unit-converter
+import { converter } from 'unit-converter'
+standard exports use { Converter }
+## methods
+## usage
+## dependecies
+
+## ändringar efter läsning
+toStandard blev toStandardUnit desciptiv names, kan förstå det direkt, samma med fromStandard
+samma med from -> fromUnit
+
 ## testing 
 mycket tester för att returnera rätt värde och att få chaining att fungera
 
@@ -19,13 +31,9 @@ kolla decimalsSetByUser satta mot decimalsNeeded för att se vilken som behövs 
 
 fakorera finalDecimals med math.pow för att göra om till heltal och sedan ta bort decimaler för att sedan dividera tillbaks till rätt tal och behålla decimaler. 
 ## fixes
-stoppa växling av conversions, kg till kmh
-mer objectorienterat
-skapa en faktory som gör att man kan skapa egna converters?????????
 
 ## notes
-error fixat om man försöker använda to före/utan from
-använder man endast from händer inget???
+
 
 få med associations till convertersarna i documentering
 
@@ -43,7 +51,7 @@ decimals are set to 0, change with setDecimals
 2 publica metoder, hur man bör använda dessa. argument de tar returvärden
 kort hur man använder programmet
 3 användningsområden
-4 beronden
+4 beroenden
 5 kända buggar ur ett användarperspektiv(kodare) buggrapport/issues
 6 framtidsvisioner, breaking changes/kan nått sabba användandet
 7 version

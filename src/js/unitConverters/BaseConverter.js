@@ -15,7 +15,7 @@ export class BaseConverter {
    * @param {string} unit - The unit to convert.
    * @returns {number} - The converted number.
    */
-  toStandard (value, unit) {
+  toStandardUnit (value, unit) {
     this.calulationSteps = []
     if (!this.units[unit]) {
       throw new Error(`toStandard Unsupported unit: ${unit}`)
@@ -33,7 +33,7 @@ export class BaseConverter {
    * @param {string} unit - The unit to convert.
    * @returns {number} - The converted number.
    */
-  fromStandard (value, unit) {
+  fromStandardUnit (value, unit) {
     if (!this.units[unit]) {
       throw new Error(`Unsupported unit: ${unit}`)
     }
@@ -78,7 +78,6 @@ export class BaseConverter {
    */
   getCalculationSteps (calculatedValue, unit) {
     this.calulationSteps.push(`The result is: ${calculatedValue} ${unit}`)
-    this.calulationSteps.push('---------------------------------')
     return this.calulationSteps.join('\n')
   }
 }
