@@ -26,19 +26,24 @@ set in your package.json
 ### Basic usage
 unit-converter allows for method chaing with the setValue method.
 ```javascript
-converter.setvalue(10).convert('kg','lbs') // Returns 22.04
+converter.setvalue(10).convert('kg', 'lbs') // Returns 22.04
 ```
 Or you can just set a value and the converter will use that value untill you change it again. 
 ```javascript
 converter.setValue(20)
-converter.convert('kg','lbs') // Returns 44.09
-converter.convert('fahrenheit','celsius') // Returns -6.67
+converter.convert('kg', 'lbs') // Returns 44.09
+converter.convert('fahrenheit', 'celsius') // Returns -6.67
 ```
 
 ### Decimals
-You can set the number of decimals with the setDecimals(). Default is 2 decimals.
+The same goes for setDecimals you can either chain it or set a value and the converter will use that value. Default is 2 decimals.
+
 ```javascript
-converter.setDecimals(5)
+converter.setDecimals(5).setValue(10).convert('kg', 'lbs') // Returns 22.04622
+// or
+converter.setDecimals(0)
+converter.convert('kg', 'lbs') // Returns 22
+
 ```
 You can retrieve the current decimal setting using getDecimals()
 ```javascript
@@ -91,8 +96,9 @@ converter.stringMode(true)
 ## version
 Version 1.0
 ## bugs
+decimals and negative numbers
 ## contributions
-We welcome contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
+Feel free to contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
 
 1. Fork and Clone the Repository
 First, fork the repository and clone it to your local development environment:
@@ -204,6 +210,9 @@ export class TemperatureConverter extends BaseConverter {
 ## ändringar efter läsning
 toStandard blev toStandardUnit desciptiv names, kan förstå det direkt, samma med fromStandard
 samma med from -> fromUnit
+
+metoder ska bara göra en sak returnera eller ändra inne i klassen...
+jag returnerar ofta this för chaining vilket motverkar den tesen...
 
 ## testing 
 mycket tester för att returnera rätt värde och att få chaining att fungera

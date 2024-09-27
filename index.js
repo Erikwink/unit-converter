@@ -3,13 +3,11 @@ export { Converter }
 
 try {
   const converter = new Converter()
-  console.log(converter.setValue(10).convert('kg', 'lbs'))
-  converter.stringMode(true)
-  console.log(converter.setValue(20).convert('kg', 'lbs'))
-  converter.calculationMode(true)
-  console.log(converter.setValue(20).convert('kg', 'lbs'))
-  console.log(converter.setValue(20).convert('kg', 'kmh'))
+  console.log(converter.setDecimals(5).setValue(10).convert('kg', 'lbs'))
 
+  converter.setDecimals(1)
+  console.log(converter.convert('kg', 'lbs'))
+  console.log(converter.convert('fahrenheit', 'celsius'))
   /* newConverter.setValue(20)
 
   newConverter.calculationMode(false)

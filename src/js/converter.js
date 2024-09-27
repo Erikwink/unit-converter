@@ -95,6 +95,7 @@ export class Converter {
   /** Sets the amount of decimals.
    *
    * @param {number} decimals - The number of decimals.
+   * @returns {object} - The object to chain
    */
   setDecimals (decimals) {
     if (decimals >= 0) {
@@ -102,6 +103,7 @@ export class Converter {
     } else if (!Number(decimals) || decimals < 0) {
       throw new Error('decimals need to be an integer')
     }
+    return this
   }
 
   /** Gets the number of decimals the converter is set to.
