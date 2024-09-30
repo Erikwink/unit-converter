@@ -26,7 +26,11 @@ set in your package.json
 ### Basic usage
 unit-converter allows for method chaing with the setValue method.
 ```javascript
+try{
 converter.setvalue(10).convert('kg', 'lbs') // Returns 22.04
+} catch (error) {
+console.log(error.message)
+}
 ```
 Or you can just set a value and the converter will use that value untill you change it again. 
 ```javascript
@@ -93,6 +97,7 @@ converter.stringMode(true)
 * 'kelvin'
 
 ## dependecies
+Unit-converter har inga beroenden till andra npm-paket.
 ## version
 Version 1.0
 ## bugs
@@ -206,6 +211,7 @@ export class TemperatureConverter extends BaseConverter {
 
 ## contact
 ## license
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 ## ändringar efter läsning
 toStandard blev toStandardUnit desciptiv names, kan förstå det direkt, samma med fromStandard
@@ -213,6 +219,8 @@ samma med from -> fromUnit
 
 metoder ska bara göra en sak returnera eller ändra inne i klassen...
 jag returnerar ofta this för chaining vilket motverkar den tesen...
+
+getters och setters..... tydligare för en programmerare
 
 ## testing 
 mycket tester för att returnera rätt värde och att få chaining att fungera
