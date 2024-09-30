@@ -211,7 +211,7 @@ export class TemperatureConverter extends BaseConverter {
 
 ## contact
 ## license
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE.TXT) file for details.
 
 ## ändringar efter läsning
 toStandard blev toStandardUnit desciptiv names, kan förstå det direkt, samma med fromStandard
