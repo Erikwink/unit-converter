@@ -2,13 +2,6 @@ import { WeightConverter } from './unitConverters/WeightConverter.js'
 import { SpeedConverter } from './unitConverters/SpeedConverter.js'
 import { TemperatureConverter } from './unitConverters/temperatureConverter.js'
 
-// TODOS
-// 6. decimals when number is negative
-// 7. naming???
-// 9. när man skapar en ny converter måste objektet heta samma som name i convertern
-// 10. rewrite override in temeprature to a case switch, och uppdatera readme
-// eslint Dev dependencies
-
 /** Class representing a converter. */
 export class Converter {
   /** The value to convert. */
@@ -118,6 +111,9 @@ export class Converter {
    * @returns {number} The adjusted number.
    */
   #checkDecimals (number) {
+    if (!Number(number)) {
+      throw new Error('Number needs to be a number')
+    }
     if (number === 0) {
       return number
     }
