@@ -19,10 +19,9 @@ export class Converter {
   #converters = {}
   /** The number of decimals to display. */
   #numberOfDecimals = 2
-
-  // flags
-  // AVRUNDNING I DECIAMLER? 0.5
+  /** Determines if the return value should be a string. */
   #returnString = false
+  /** Determines if the calculations should be returned. */
   #showCalculation = false
   /** The constructor.
    *
@@ -33,17 +32,15 @@ export class Converter {
       new SpeedConverter(),
       new TemperatureConverter()
     ]
-    // Build unitMap and converters dynamically
     converterInstances.forEach((converter) => {
-      const unitType = converter.getUnitsName()
+      const unitType = converter.getUnitNames()
 
       if (this.#converters[unitType]) {
         throw new Error(`Duplicate unit type: ${unitType}`)
       }
       // Store the converter by its type
       this.#converters[unitType] = converter
-
-      // Map each unit to its type (e.g., kg -> "weight")
+      // Map the units to the correct converter
       converter.getUnitTypes().forEach((unit) => {
         this.#unitMap[unit] = unitType
       })
@@ -121,47 +118,18 @@ export class Converter {
    * @returns {number} The adjusted number.
    */
   #checkDecimals (number) {
-    if (this.#numberOfDecimals === 0 && number >= 1) {
-      // check if the number is 0,5 or bigger than return math floor or math ceil???????
-      return Math.floor(number)
-    }
-
-    const numberStr = number.toString()
-    const decimalIndex = numberStr.indexOf('.')
-
-    // If no decimal retun number
-    if (decimalIndex === -1) {
+    if (number === 0) {
       return number
     }
-
-    // Check for zeros after decimal
-    let firstNonZeroIndex = decimalIndex + 1
-    while (numberStr[firstNonZeroIndex] === '0' && firstNonZeroIndex < numberStr.length) {
-      firstNonZeroIndex++
+    if (number < 1) {
+      return number
     }
+    const isNegative = number < 0
+    const absoluteNumber = Math.abs(number)
 
-    // Calculate decimals
-    let decimalsNeeded = firstNonZeroIndex - decimalIndex
+    const correctNumber = absoluteNumber.toFixed(this.#numberOfDecimals)
 
-    // If integers found, decimalsNeeded = 1
-    if (decimalsNeeded === numberStr.length) {
-      decimalsNeeded = 1
-    }
-
-    if (this.#numberOfDecimals === 0 && number < 1) {
-      const factor = Math.pow(10, decimalsNeeded)
-      return Math.floor(number * factor) / factor
-    }
-
-    // If numberOfDecimals are null, set to 2
-    const decimalsSetByUser = this.#numberOfDecimals || 2
-
-    // Check if decimalsNeeded are greater than decimalsSetByUser
-    const finalDecimals = Math.max(decimalsNeeded, decimalsSetByUser)
-
-    // Factor the number to remove decimals
-    const factor = Math.pow(10, finalDecimals)
-    return Math.floor(number * factor) / factor
+    return isNegative ? -Number(correctNumber) : Number(correctNumber)
   }
 
   /** Determins if the return value should be a string.

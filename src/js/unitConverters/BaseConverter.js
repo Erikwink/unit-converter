@@ -56,7 +56,7 @@ export class BaseConverter {
    *
    * @returns {string} - The name of the unit.
    */
-  getUnitsName () {
+  getUnitNames () {
     return this.units.formOfUnits
   }
 

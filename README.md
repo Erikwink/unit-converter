@@ -101,7 +101,9 @@ Unit-converter har inga beroenden till andra npm-paket.
 ## version
 Version 1.0
 ## bugs
-decimals and negative numbers
+### Numbers below 1 and negative numbers
+When the return value is below 1 the decimals wont work as expected. A number below 1 will always return the full number. EX see tests.
+
 ## contributions
 Feel free to contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
 
@@ -222,30 +224,27 @@ jag returnerar ofta this för chaining vilket motverkar den tesen...
 
 getters och setters..... tydligare för en programmerare
 
+inte använda true och false som argument??
+
 ## testing 
-mycket tester för att returnera rätt värde och att få chaining att fungera
+See wiki page for tests.[test](https://github.com/Erikwink/unit-converter.wiki.git)
 
 ## check decimals
-
 om number är större än 1  (=  inte 0.001) och decimalerna är satta till 0 -> ingen untantagsregel gäller, retunera number, lägga till math.floor/math.ceil senare???
-
 gör om till string för att räkna ut vart . sitter
 om ingen . returnera number
-
 while loop för att kolla hur många 0 efter . 
 decimalsNeeded === skillnaden mellan fösta incke 0an och index för decimaltecken, om inga 0 hittas visa 1 decimal
-
 kolla om decimaler är satta till 0 och number är mindre än 1
 returnera antalet decimaler som behövs för att visa annat än 0
-
 om inga decimaler är satta, visas 2 decimaler
 kolla decimalsSetByUser satta mot decimalsNeeded för att se vilken som behövs användas = finalDecimals
-
 fakorera finalDecimals med math.pow för att göra om till heltal och sedan ta bort decimaler för att sedan dividera tillbaks till rätt tal och behålla decimaler. 
 ## fixes
 
 ## notes
-set value or setvalue()?????????
+
+nestled if and switch???
 
 få med associations till convertersarna i documentering
 
