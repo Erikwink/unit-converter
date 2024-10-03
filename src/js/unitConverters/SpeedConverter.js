@@ -10,19 +10,19 @@ export class SpeedConverter extends BaseConverter {
       formOfUnits: 'speed',
       kmh: {
         name: 'kmh',
-        toStandardMessure: 1
+        ToStandardMeasurement: 1
       },
       mph: {
         name: 'mph',
-        toStandardMessure: 1 * 1.609344
+        ToStandardMeasurement: 1 * 1.609344
       },
       knots: {
         name: 'knots',
-        toStandardMessure: 1 * 1.85200
+        ToStandardMeasurement: 1 * 1.85200
       },
       ms: {
         name: 'ms',
-        toStandardMessure: 1 * 3.6
+        ToStandardMeasurement: 1 * 3.6
       }
     }
 

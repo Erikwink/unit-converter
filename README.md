@@ -36,7 +36,7 @@ Or you can just set a value and the converter will use that value untill you cha
 ```javascript
 converter.setValue(20)
 converter.convert('kg', 'lbs') // Returns 44.09
-converter.convert('fahrenheit', 'celsius') // Returns -6.67
+converter.convert('f', 'c') // Returns -6.67
 ```
 
 ### Decimals
@@ -60,7 +60,7 @@ console.log(converter.getUnits())
 //{
 //  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
 //  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
-//  temperature: [ 'celsius', 'fahrenheit', 'kelvin' ]
+//  temperature: [ 'c', 'f', 'k' ]
 //}
 ```
 Dont try to make conversion between different units!
@@ -79,30 +79,32 @@ converter.stringMode(true)
 // The result is: 44.09 lbs
 ```
 
-## 3. supported units
-### weight:
+## 3. Supported units
+### Weight:
 * 'kg'
 * 'g'
 * 'lbs'
 * 'oz'
 * 'ton' 
-### speed:
+### Speed:
 * 'kmh'
 * 'mph'
 * 'knots'
 * 'ms' 
-### temperature:
+### Temperature:
 * 'celsius'
 * 'fahrenheit'
 * 'kelvin'
 
-## version
+## Version
 Version 1.0
-## bugs
+## Language
+Javascript
+## Bugs
 ##### Numbers below 1 and negative numbers
 When the return value is below 1 the decimals wont work as expected. A number below 1 will always return the full number. EX see tests.
 
-## contributions
+## Contributions
 Feel free to contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
 
 1. Fork and Clone the Repository
@@ -113,7 +115,7 @@ git clone https://github.com/Erikwink/unit-converter.git
 ```
 2. Create a New Converter Class
 All converters should extend the BaseConverter class and follow the same structure. For example, if you're adding a converter for length you would do something like this:
-Make sure the object key is named the same as the value of name for the converter to work.
+Make sure the object key is named the same as the value of name for the converter to work, see example below.
 
 ```javascript
 
@@ -151,7 +153,7 @@ export class Converter {
   }
 }
 ```
-4. Make sure to test, document and follow the code style in your classes before submiting a push request. See tests for details.
+4. Make sure to test, document and follow the code style in your classes before submiting a push request. See [tests](./TEST-REPORT.md) for details.
 
 5. ### Special cases.
 if your converter doesn't follow the same pattern for conversion you might have to ovveride the methods in the class. see example
@@ -209,35 +211,12 @@ export class TemperatureConverter extends BaseConverter {
 
 ```
 
-
-## contact
-## license
+## License
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE.TXT) file for details.
 
-## ändringar efter läsning
-toStandard blev toStandardUnit desciptiv names, kan förstå det direkt, samma med fromStandard
-samma med from -> fromUnit
-
-metoder ska bara göra en sak returnera eller ändra inne i klassen...
-jag returnerar ofta this för chaining vilket motverkar den tesen...
-
-getters och setters..... tydligare för en programmerare
-
-inte använda true och false som argument??
-
-## testing 
-See test page for tests.[test](./TEST-REPORT.md)
-
-## notes
-
-nestled if and switch???
-
-få med associations till convertersarna i documentering
-
-INTE SKRIVA KOD TILL SIG SJÄLV UTAN TILL ANDRA!!!!
-INTE KOMMENTERA VAD KODEN GÖR... EX IF EQUAL DOES THIS....
-
-ju mer man klurar på problemet ju simplare blir det.... gångra allt till ett standarmått för att sedan dela med det konverterade numret, väldigt mycket simplare
+## Testing 
+The module is tested using manul tests.
+See test page more info [Tests](./TEST-REPORT.md)
 
 
 

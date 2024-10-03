@@ -66,7 +66,6 @@ export class Converter {
     const fromType = this.#unitMap[fromUnit]
     const toType = this.#unitMap[toUnit]
 
-    // Check if both units are handled by the same converter type
     if (fromType !== toType) {
       throw new Error(`Cannot convert between ${fromUnit} and ${toUnit}`)
     }

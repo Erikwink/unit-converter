@@ -88,8 +88,8 @@ converter.setValue(1000).setDecimals(3)
 console.log(converter.convert('g', 'lbs')) // Expected output: 2.204
 ```
 ### 4.1 Decimals rounding point
-Call Converter.setValue(37).setDecimals(1).convert('celsius', 'fahrennheit')
-Call Converter.setDecimals(2).convert('celsius', 'fahrennheit')
+Call Converter.setValue(37).setDecimals(1).convert('c', 'f')
+Call Converter.setDecimals(2).convert('c', 'f')
 
 
 Expected Result:
@@ -98,14 +98,14 @@ The result should be 98.6 and 98.60
 Execution Example:
 ```js
 converter.setValue(37)setDecimals(1)
-  console.log(converter.convert('celsius', 'fahrenheit')) // Expected: 98.6
+  console.log(converter.convert('c', 'f')) // Expected: 98.6
   converter.setDecimals(2)
-  console.log(converter.convert('celsius', 'fahrenheit')) // Expected: 98.60
+  console.log(converter.convert('c', 'f')) // Expected: 98.60
 ``` 
 
 ### 4.2 Negative numbers
-Call converter.setValue(-19.454).setDecimals(0).convert('celsius', 'fahrennheit')
-Call Converter.setDecimals(2).convert('celsius', 'fahrennheit')
+Call converter.setValue(-19.454).setDecimals(0).convert('c', 'f')
+Call Converter.setDecimals(2).convert('c', 'f')
 
 Expected Result:
 The result should be -3 and -3.01
@@ -113,9 +113,9 @@ The result should be -3 and -3.01
 Execution Example:
 ```js
 converter.setValue(-19.454).setDecimals(0)
-  console.log(converter.convert('celsius', 'fahrenheit')) // Expected: -3
+  console.log(converter.convert('c', 'f')) // Expected: -3
   converter.setDecimals(2)
-  console.log(converter.convert('celsius', 'fahrenheit')) // Expected: -3.01
+  console.log(converter.convert('c', 'f')) // Expected: -3.01
 ``` 
 ### 4.3 Numbers below 1
 Call converter.setValue(156).setDecimals(2).convert('g', 'kg')
@@ -165,9 +165,9 @@ const converter = new Converter()
 converter.setValue(1000).calculationMode(true)
 console.log(converter.convert('g', 'lbs'))
 // Expected output: 
-// 1000 * 0.001 g = 1 
-// (1 / 0.45359237)
-// The result is: 2.2 lbs
+1000 * 0.001 g = 1 
+(1 / 0.45359237)
+The result is: 2.2 lbs
 ```
 ## Test Case 7: Negative value conversion
 Test Objective: Ensure that negative values are correctly converted and rounded.

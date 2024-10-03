@@ -20,9 +20,9 @@ export class BaseConverter {
     if (!this.units[unit]) {
       throw new Error(`toStandard Unsupported unit: ${unit}`)
     }
-    const result = value * this.units[unit].toStandardMessure
+    const result = value * this.units[unit].ToStandardMeasurement
     this.calulationSteps.push(
-      `${value} * ${this.units[unit].toStandardMessure} ${unit} = ${result} `
+      `${value} * ${this.units[unit].ToStandardMeasurement} ${unit} = ${result} `
     )
     return result
   }
@@ -37,9 +37,9 @@ export class BaseConverter {
     if (!this.units[unit]) {
       throw new Error(`Unsupported unit: ${unit}`)
     }
-    const result = value / this.units[unit].toStandardMessure
+    const result = value / this.units[unit].ToStandardMeasurement
     this.calulationSteps.push(
-      `(${value} / ${this.units[unit].toStandardMessure})`
+      `(${value} / ${this.units[unit].ToStandardMeasurement})`
     )
     return result
   }

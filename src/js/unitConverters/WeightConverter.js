@@ -10,23 +10,23 @@ export class WeightConverter extends BaseConverter {
       formOfUnits: 'weight',
       kg: {
         name: 'kg',
-        toStandardMessure: 1
+        ToStandardMeasurement: 1
       },
       g: {
         name: 'g',
-        toStandardMessure: 1 / 1000
+        ToStandardMeasurement: 1 / 1000
       },
       lbs: {
         name: 'lbs',
-        toStandardMessure: 1 * 0.45359237
+        ToStandardMeasurement: 1 * 0.45359237
       },
       oz: {
         name: 'oz',
-        toStandardMessure: 1 / 35.2739619
+        ToStandardMeasurement: 1 / 35.2739619
       },
       ton: {
         name: 'ton',
-        toStandardMessure: 1000
+        ToStandardMeasurement: 1000
       }
 
     }

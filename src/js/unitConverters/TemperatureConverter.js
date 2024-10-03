@@ -8,25 +8,25 @@ export class TemperatureConverter extends BaseConverter {
   constructor () {
     super({
       formOfUnits: 'temperature',
-      celsius: {
-        name: 'celsius',
-        toStandardMessure: 1,
+      c: {
+        name: 'c',
+        ToStandardMeasurement: 1,
         offset: 0
       },
-      fahrenheit: {
-        name: 'fahrenheit',
-        toStandardMessure: 1.8,
+      f: {
+        name: 'f',
+        ToStandardMeasurement: 1.8,
         offset: 32
       },
-      kelvin: {
-        name: 'kelvin',
-        toStandardMessure: 1,
+      k: {
+        name: 'k',
+        ToStandardMeasurement: 1,
         offset: 273.15
       }
     })
   }
 
-  /** Override the toStandard method to handle Kelvin separately.
+  /** Override the toStandardUnit method to handle offset for Kelvin separately.
    *
    * @param {number} value - The value to convert.
    * @param {string} unit - The unit to convert.
@@ -39,19 +39,19 @@ export class TemperatureConverter extends BaseConverter {
       throw new Error(`Unsupported unit: ${unit}`)
     }
 
-    if (unit === 'kelvin') {
+    if (unit === 'k') {
       this.calulationSteps.push(`${value} - ${unitData.offset}`)
       return value - unitData.offset
-    } else if (unit === 'fahrenheit') {
-      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.toStandardMessure}`)
-      return (value - unitData.offset) / unitData.toStandardMessure
+    } else if (unit === 'f') {
+      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.ToStandardMeasurement}`)
+      return (value - unitData.offset) / unitData.ToStandardMeasurement
     } else {
-      this.calulationSteps.push(`${value} * ${unitData.toStandardMessure}`)
-      return value * unitData.toStandardMessure
+      this.calulationSteps.push(`${value} * ${unitData.ToStandardMeasurement}`)
+      return value * unitData.ToStandardMeasurement
     }
   }
 
-  /** Override the fromStandard method to handle Kelvin separately.
+  /** Override the fromStandardUnit method to handle offset for Kelvin separately.
    *
    * @param {number} value - The value to convert.
    * @param {string} unit - The unit to convert.
@@ -63,15 +63,15 @@ export class TemperatureConverter extends BaseConverter {
       throw new Error(`Unsupported unit: ${unit}`)
     }
 
-    if (unit === 'kelvin') {
+    if (unit === 'k') {
       this.calulationSteps.push(`${value} + ${unitData.offset}`)
       return value + unitData.offset
-    } else if (unit === 'fahrenheit') {
-      this.calulationSteps.push(`(${value} * ${unitData.toStandardMessure}) + ${unitData.offset}`)
-      return (value * unitData.toStandardMessure) + unitData.offset
+    } else if (unit === 'f') {
+      this.calulationSteps.push(`(${value} * ${unitData.ToStandardMeasurement}) + ${unitData.offset}`)
+      return (value * unitData.ToStandardMeasurement) + unitData.offset
     } else {
-      this.calulationSteps.push(`${value} / ${unitData.toStandardMessure}`)
-      return value / unitData.toStandardMessure
+      this.calulationSteps.push(`${value} / ${unitData.ToStandardMeasurement}`)
+      return value / unitData.ToStandardMeasurement
     }
   }
 }
