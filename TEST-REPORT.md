@@ -15,9 +15,11 @@ Test Steps:
 Create a new Converter object.
 Call setValue(1000) to set the value to 1000 grams.
 Call convert('g', 'lbs') to convert from grams to pounds.
+
 Expected Result:
 
 The result should be 2.2 pounds.
+
 Execution Example:
 
 ```javascript
@@ -33,9 +35,11 @@ Test Steps:
 
 Create a new Converter object.
 Call setValue('notANumber') and observe the result.
+
 Expected Result:
 
 The system should throw an error with the message: "Value needs to be a number".
+
 Execution Example:
 
 ```javascript
@@ -55,9 +59,11 @@ Test Steps:
 Create a new Converter object.
 Call setValue(100) to set the value to 100 kmh.
 Call convert('kmh', 'kg') to attempt converting speed to weight.
+
 Expected Result:
 
 An error should be thrown with the message: "Cannot convert between kmh and kg".
+
 Execution Example:
 
 ```javascript
@@ -66,7 +72,7 @@ converter.setValue(100)
 try {
   console.log(converter.convert('kmh', 'kg'))
 } catch (error) {
-  console.log(error.message) // Expected output: Cannot convert between km/h and kg
+  console.log(error.message) // Expected output: Cannot convert between kmh and kg
 }
 ```
 ## Test Case 4: Decimal precision handling
@@ -77,9 +83,11 @@ Test Steps:
 Create a new Converter object.
 Call setValue(1000) and then set the decimals using setDecimals(3).
 Call convert('g', 'lbs') to convert from grams to pounds.
+
 Expected Result:
 
 The result should be 2.204 pounds.
+
 Execution Example:
 
 ```javascript
@@ -93,6 +101,7 @@ Call Converter.setDecimals(2).convert('c', 'f')
 
 
 Expected Result:
+
 The result should be 98.6 and 98.60
 
 Execution Example:
@@ -121,6 +130,7 @@ converter.setValue(-19.454).setDecimals(0)
 Call converter.setValue(156).setDecimals(2).convert('g', 'kg')
 
 Expected result: 
+
 The result should be 0.15
 
 Execution Example:
@@ -136,9 +146,11 @@ Test Steps:
 Create a new Converter object.
 Call setValue(1000) and enable string mode with stringMode(true).
 Call convert('g', 'lbs') to convert from grams to pounds.
+
 Expected Result:
 
 The result should be a string: " 2.204 lbs".
+
 Execution Example:
 
 ```javascript
@@ -155,9 +167,11 @@ Test Steps:
 Create a new Converter object.
 Call setValue(1000) and enable calculation mode with calculationMode(true).
 Call convert('g', 'lbs') to convert from grams to pounds.
+
 Expected Result:
 
 The result should include detailed calculation steps.
+
 Execution Example:
 
 ```javascript
@@ -177,9 +191,11 @@ Test Steps:
 Create a new Converter object.
 Call setValue(-500).setDecimals(3) to set a negative value.
 Call convert('g', 'lbs') to convert from grams to pounds.
+
 Expected Result:
 
 The result should be -1.103.
+
 Execution Example:
 
 ```javascript
@@ -197,7 +213,7 @@ Summary of Test Cases:
 |3 | Conversion between different unit types (fail) | Error: "Cannot convert between kmh and kg"|✅|
 |4 | Decimal precision handling | 2.204|✅|
 |4.1|Decimal rounding point|98.6 and 98.60|❌|Due to nodejs it will display 98.60 as 98.6 |
-|4.2|Negative numbers|-3 and -3.01|❌|Numbers below 0 will always return the full number.|
+|4.2|Negative numbers|-3 and -3.01|❌|Numbers below 0 will always return the full number with decimals.|
 |4.3|Numbers below 1|0.15|❌|Numbers below 1 will return the full number with decimals.
 |5 | String mode | "2.205 lbs"|✅|
 |6 | Calculation mode | Detailed calculation steps|✅|

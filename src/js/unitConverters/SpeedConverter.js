@@ -16,8 +16,8 @@ export class SpeedConverter extends BaseConverter {
         name: 'mph',
         ToStandardMeasurement: 1 * 1.609344
       },
-      knots: {
-        name: 'knots',
+      kt: {
+        name: 'kt',
         ToStandardMeasurement: 1 * 1.85200
       },
       ms: {

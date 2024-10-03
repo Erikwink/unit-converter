@@ -51,7 +51,8 @@ converter.convert('kg', 'lbs') // Returns 22
 ```
 You can retrieve the current decimal setting using getDecimals()
 ```javascript
-converter.getDecimals(); Returns // 5
+converter.setDecimals(5)
+converter.getDecimals(); //Returns  5
 ```
 ### Units
 Public method getUnits() will show you the possible conversions.
@@ -59,7 +60,7 @@ Public method getUnits() will show you the possible conversions.
 console.log(converter.getUnits())
 //{
 //  weight: [ 'kg', 'g', 'lbs', 'oz', 'ton' ],
-//  speed: [ 'kmh', 'mph', 'knots', 'ms' ],
+//  speed: [ 'kmh', 'mph', 'kt', 'ms' ],
 //  temperature: [ 'c', 'f', 'k' ]
 //}
 ```
@@ -71,12 +72,15 @@ converter.setValue(20).convert('kg', 'kmh') // Throws Cannot convert between kg 
 ### Output formats
 By default, the converter returns a number. But you can switch the output to either a string with units or a full calculation by using:
 ```javascript
-converter.calculationMode(true) // Returns 44.09 lbs
-converter.stringMode(true) 
-// Returns
-// 20 * 1 kg = 20
-// (20 / 0.45359237)
-// The result is: 44.09 lbs
+  converter.stringMode(true)
+  console.log(converter.setValue(20).setDecimals(2).convert('kg', 'lbs'))
+  // Returns 44.09 lbs
+  converter.calculationMode(true)
+  console.log(converter.convert('kg', 'lbs'))
+  // Returns
+  // 20 * 1 kg = 20
+  // (20 / 0.45359237)
+  // The result is: 44.09 lbs
 ```
 
 ## 3. Supported units
@@ -89,12 +93,12 @@ converter.stringMode(true)
 ### Speed:
 * 'kmh'
 * 'mph'
-* 'knots'
+* 'kt'
 * 'ms' 
 ### Temperature:
-* 'celsius'
-* 'fahrenheit'
-* 'kelvin'
+* 'c'
+* 'f'
+* 'k'
 
 ## Version
 Version 1.0
@@ -102,7 +106,7 @@ Version 1.0
 Javascript
 ## Bugs
 ##### Numbers below 1 and negative numbers
-When the return value is below 1 the decimals wont work as expected. A number below 1 will always return the full number. EX see tests.
+When the return value is below 1 the decimals wont work as expected. A number below 1 will always return the full number. EX see [Tests](./TEST-REPORT.md)
 
 ## Contributions
 Feel free to contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
@@ -166,25 +170,25 @@ export class TemperatureConverter extends BaseConverter {
   constructor () {
     super({
       formOfUnits: 'temperature',
-      celsius: {
-        name: 'celsius',
-        toStandardMessure: 1,
+      c: {
+        name: 'c',
+        ToStandardMeasurement: 1,
         offset: 0
       },
-      fahrenheit: {
-        name: 'fahrenheit',
-        toStandardMessure: 1.8,
+      f: {
+        name: 'f',
+        ToStandardMeasurement: 1.8,
         offset: 32
       },
-      kelvin: {
-        name: 'kelvin',
-        toStandardMessure: 1,
+      k: {
+        name: 'k',
+        ToStandardMeasurement: 1,
         offset: 273.15
       }
     })
   }
 
-  /** Override the toStandard method to handle Kelvin separately.
+  /** Override the toStandardUnit method to handle offset for Kelvin separately.
    *
    * @param {number} value - The value to convert.
    * @param {string} unit - The unit to convert.
@@ -197,17 +201,18 @@ export class TemperatureConverter extends BaseConverter {
       throw new Error(`Unsupported unit: ${unit}`)
     }
 
-    if (unit === 'kelvin') {
+    if (unit === 'k') {
       this.calulationSteps.push(`${value} - ${unitData.offset}`)
       return value - unitData.offset
-    } else if (unit === 'fahrenheit') {
-      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.toStandardMessure}`)
-      return (value - unitData.offset) / unitData.toStandardMessure
+    } else if (unit === 'f') {
+      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.ToStandardMeasurement}`)
+      return (value - unitData.offset) / unitData.ToStandardMeasurement
     } else {
-      this.calulationSteps.push(`${value} * ${unitData.toStandardMessure}`)
-      return value * unitData.toStandardMessure
+      this.calulationSteps.push(`${value} * ${unitData.ToStandardMeasurement}`)
+      return value * unitData.ToStandardMeasurement
     }
   }
+
 
 ```
 
