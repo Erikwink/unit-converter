@@ -1,6 +1,6 @@
 import { WeightConverter } from './unitConverters/WeightConverter.js'
 import { SpeedConverter } from './unitConverters/SpeedConverter.js'
-import { TemperatureConverter } from './unitConverters/temperatureConverter.js'
+import { TemperatureConverter } from './unitConverters/TemperatureConverter.js'
 
 /** Class representing a converter. */
 export class Converter {
