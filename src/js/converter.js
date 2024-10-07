@@ -12,12 +12,23 @@ export class Converter {
   /** An object mapping the units to the correct converter. */
   #unitMap = {}
 
+  /**
+   *
+   */
   constructor () {
     const converterInstances = [
       new WeightConverter(),
       new SpeedConverter(),
       new TemperatureConverter()
     ]
+    this.#mapConverters(converterInstances)
+  }
+
+  /**
+   *
+   * @param {object} converterInstances
+   */
+  #mapConverters (converterInstances) {
     converterInstances.forEach((converter) => {
       const unitType = converter.getUnitNames()
 
