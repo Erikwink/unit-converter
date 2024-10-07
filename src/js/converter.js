@@ -4,21 +4,14 @@ import { TemperatureConverter } from './unitConverters/TemperatureConverter.js'
 
 /** Class representing a converter. */
 export class Converter {
-  /** The value to convert. */
   #value = 0
+  #converters = {}
+  #numberOfDecimals = 2
+  #returnString = false
+  #showCalculation = false
   /** An object mapping the units to the correct converter. */
   #unitMap = {}
-  /** An object with the converters. */
-  #converters = {}
-  /** The number of decimals to display. */
-  #numberOfDecimals = 2
-  /** Determines if the return value should be a string. */
-  #returnString = false
-  /** Determines if the calculations should be returned. */
-  #showCalculation = false
-  /** The constructor.
-   *
-   */
+
   constructor () {
     const converterInstances = [
       new WeightConverter(),
@@ -55,7 +48,7 @@ export class Converter {
 
   /** Passes the units to convert to the correct converter.
    *
-   * @param {string} fromUnit - The unit t oconvert from.
+   * @param {string} fromUnit - The unit to convert from.
    * @param {string} toUnit - The unit to convert to.
    * @returns {number} - The converted number.
    */
