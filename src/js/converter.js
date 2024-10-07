@@ -2,7 +2,6 @@ import { WeightConverter } from './unitConverters/WeightConverter.js'
 import { SpeedConverter } from './unitConverters/SpeedConverter.js'
 import { TemperatureConverter } from './unitConverters/TemperatureConverter.js'
 
-/** Class representing a converter. */
 export class Converter {
   #value = 0
   #converters = {}
@@ -38,15 +37,18 @@ export class Converter {
       // Store the converter by its type
       this.#converters[unitType] = converter
       // Map the units to the correct converter
-      converter.getUnitTypes().forEach((unit) => {
-        this.#unitMap[unit] = unitType
-      })
+      this.#mapUnits(converter, unitType)
     })
   }
 
-  /** Sets the number to convert.
-   *
-   * @param {number} value - The number to convert
+  #mapUnits(converter, unitType) {
+    converter.getUnitTypes().forEach((unit) => {
+      this.#unitMap[unit] = unitType
+    })
+  }
+
+  /**
+   * @param {number} value
    * @returns {object} - The object to chain
    */
   setValue (value) {
@@ -131,6 +133,9 @@ export class Converter {
     return isNegative ? -Number(correctNumber) : Number(correctNumber)
   }
 
+  getAbsouluteNumber(number){
+    
+  }
   /** Determins if the return value should be a string.
    *
    * @param {boolean} boolean - The boolean to determine if the return value should be a string.
