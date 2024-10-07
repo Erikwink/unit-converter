@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-description */
+/* eslint-disable jsdoc/require-jsdoc */
 import { WeightConverter } from './unitConverters/WeightConverter.js'
 import { SpeedConverter } from './unitConverters/SpeedConverter.js'
 import { TemperatureConverter } from './unitConverters/TemperatureConverter.js'
@@ -41,7 +43,7 @@ export class Converter {
     })
   }
 
-  #mapUnits(converter, unitType) {
+  #mapUnits (converter, unitType) {
     converter.getUnitTypes().forEach((unit) => {
       this.#unitMap[unit] = unitType
     })
@@ -78,7 +80,7 @@ export class Converter {
 
     const converter = this.#converters[fromType]
     const standardValue = converter.toStandardUnit(this.#value, fromUnit)
-    const result = this.#checkDecimals(converter.fromStandardUnit(standardValue, toUnit))
+    const result = this.#adjustDecimals(converter.fromStandardUnit(standardValue, toUnit))
     if (this.#returnString) {
       return converter.toString(result, toUnit)
     } else if (this.#showCalculation) {
@@ -115,7 +117,7 @@ export class Converter {
    * @param {number} number - The number to adjust.
    * @returns {number} The adjusted number.
    */
-  #checkDecimals (number) {
+  #adjustDecimals (number) {
     if (!Number(number)) {
       throw new Error('Number needs to be a number')
     }
@@ -126,16 +128,15 @@ export class Converter {
       return number
     }
     const isNegative = number < 0
-    const absoluteNumber = Math.abs(number)
-
-    const correctNumber = absoluteNumber.toFixed(this.#numberOfDecimals)
+    const correctNumber = this.#getAbsouluteNumber(number).toFixed(this.#numberOfDecimals)
 
     return isNegative ? -Number(correctNumber) : Number(correctNumber)
   }
 
-  getAbsouluteNumber(number){
-    
+  #getAbsouluteNumber (number) {
+    return Math.abs(number)
   }
+
   /** Determins if the return value should be a string.
    *
    * @param {boolean} boolean - The boolean to determine if the return value should be a string.
