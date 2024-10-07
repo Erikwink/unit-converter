@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-param */
 /* eslint-disable jsdoc/require-param-description */
 /* eslint-disable jsdoc/require-description */
 /* eslint-disable jsdoc/require-jsdoc */
@@ -9,8 +10,6 @@ export class Converter {
   #value = 0
   #converters = {}
   #numberOfDecimals = 2
-  #returnString = false
-  #showCalculation = false
   /** An object mapping the units to the correct converter. */
   #unitMap = {}
 
@@ -51,44 +50,62 @@ export class Converter {
    * @returns {object} - The object to chain
    */
   setValue (value) {
-    if (!Number(value)) {
-      throw new Error('Value needs to be a number')
-    }
+    this.#validateNumber(value)
     this.#value = value
     return this
   }
 
-  /** Passes the units to convert to the correct converter.
-   *
-   * @param {string} fromUnit - The unit to convert from.
-   * @param {string} toUnit - The unit to convert to.
+  /**
+   * @param {string} fromUnit
+   * @param {string} toUnit
    * @returns {number} - The converted number.
    */
   convert (fromUnit, toUnit) {
+    const converter = this.#getCorrectConverter(fromUnit, toUnit)
+    const standardValue = converter.toStandardUnit(this.#value, fromUnit)
+    return this.#adjustDecimals(converter.fromStandardUnit(standardValue, toUnit))
+  }
+
+  /**
+   * @param {string} fromUnit
+   * @param {string} toUnit
+   * @returns {string} - The converted value as a string.
+   */
+  convertToString (fromUnit, toUnit) {
+    const converter = this.#getCorrectConverter(fromUnit, toUnit)
+    const result = this.convert(fromUnit, toUnit)
+    return converter.toString(result, toUnit)
+  }
+
+  /**
+   * @param {string} fromUnit
+   * @param {string} toUnit
+   * @returns {string} - The steps of the calculation as a string.
+   */
+  convertToCalc (fromUnit, toUnit) {
+    const converter = this.#getCorrectConverter(fromUnit, toUnit)
+    const result = this.convert(fromUnit, toUnit)
+    return converter.getCalculationSteps(result, toUnit)
+  }
+
+  /**
+   * @param {string} fromUnit
+   * @param {string} toUnit
+   * @returns {object} - The correct converter object.
+   */
+  #getCorrectConverter (fromUnit, toUnit) {
     if (typeof fromUnit !== 'string' || typeof toUnit !== 'string') {
-      throw new Error('units needs to be strings, Ex "kg" or "lbs"')
+      throw new Error('Units need to be strings, e.g., "kg" or "lbs".')
     }
     const fromType = this.#unitMap[fromUnit]
     const toType = this.#unitMap[toUnit]
-
     if (fromType !== toType) {
       throw new Error(`Cannot convert between ${fromUnit} and ${toUnit}`)
     }
-
-    const converter = this.#converters[fromType]
-    const standardValue = converter.toStandardUnit(this.#value, fromUnit)
-    const result = this.#adjustDecimals(converter.fromStandardUnit(standardValue, toUnit))
-    if (this.#returnString) {
-      return converter.toString(result, toUnit)
-    } else if (this.#showCalculation) {
-      return converter.getCalculationSteps(result, toUnit)
-    } else {
-      return result
-    }
+    return this.#converters[fromType]
   }
 
-  /** Sets the amount of decimals.
-   *
+  /**
    * @param {number} decimals - The number of decimals.
    * @returns {object} - The object to chain
    */
@@ -101,23 +118,16 @@ export class Converter {
     return this
   }
 
-  /** Gets the number of decimals the converter is set to.
-   *
-   * @returns {number} - The number of decimals the converter is set to.
-   */
   getDecimals () {
     return this.#numberOfDecimals
   }
 
-  /** Adjust the decimals of the number.
-   *
+  /**
    * @param {number} number - The number to adjust.
    * @returns {number} The adjusted number.
    */
   #adjustDecimals (number) {
-    if (Number.isNaN(number)) {
-      throw new Error('Number needs to be a number')
-    }
+    this.#validateNumber(number)
     if (number === 0) {
       return number
     }
@@ -134,37 +144,7 @@ export class Converter {
     return Math.abs(number)
   }
 
-  /** Determins if the return value should be a string.
-   *
-   * @param {boolean} boolean - The boolean to determine if the return value should be a string.
-   */
-  stringMode (boolean) {
-    if (boolean === true) {
-      this.#showCalculation = false
-      this.#returnString = true
-    } else if (boolean === false) {
-      this.#returnString = false
-    } else {
-      throw new Error('toggleStringMode only accepts true or false')
-    }
-  }
-
-  /** Determins if the calculations should be returned.
-   *
-   * @param {boolean} boolean - The boolean to determine if the calculations should be shown.
-   */
-  calculationMode (boolean) {
-    if (boolean) {
-      this.#returnString = false
-      this.#showCalculation = true
-    } else if (boolean === false) {
-      this.#showCalculation = false
-    } else {
-      throw new Error('toggleCalculations only accepts true or false')
-    }
-  }
-
-  /** Gets the units names.
+  /** Gets the units possible for conversion.
    *
    * @returns {object} - An object with the units names.
    */
@@ -177,5 +157,14 @@ export class Converter {
       units[type].push(unit)
     }
     return units
+  }
+
+  /**
+   * @throws {Error} - If not a number.
+   */
+  #validateNumber (number) {
+    if (Number.isNaN(number)) {
+      throw new Error('Please enter a number')
+    }
   }
 }

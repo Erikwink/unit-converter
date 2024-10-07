@@ -37,4 +37,5 @@ Sometimes my code can be a bit unstructured, i tend to jump between classes and 
 
 
 ## After W2
-Moved functionality from constructor to separate functions. Renamed checkdecimals to adjustDecimals. getAbsouluteNumber method.
+Moved functionality from constructor to separate functions. Renamed checkdecimals to adjustDecimals. getAbsouluteNumber method. Removed flags and made convertToString and convertToCalc. Broke out #getConverters to use same logic in all methods. renmaned to getCorrectConverter for clarity convertToNumber???
+getUnits kept jsdoc for user to see when hover
