@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-param-description */
 /* eslint-disable jsdoc/require-description */
 /* eslint-disable jsdoc/require-jsdoc */
 import { WeightConverter } from './unitConverters/WeightConverter.js'
@@ -13,9 +14,6 @@ export class Converter {
   /** An object mapping the units to the correct converter. */
   #unitMap = {}
 
-  /**
-   *
-   */
   constructor () {
     const converterInstances = [
       new WeightConverter(),
@@ -26,7 +24,6 @@ export class Converter {
   }
 
   /**
-   *
    * @param {object} converterInstances
    */
   #mapConverters (converterInstances) {
@@ -118,7 +115,7 @@ export class Converter {
    * @returns {number} The adjusted number.
    */
   #adjustDecimals (number) {
-    if (!Number(number)) {
+    if (Number.isNaN(number)) {
       throw new Error('Number needs to be a number')
     }
     if (number === 0) {
