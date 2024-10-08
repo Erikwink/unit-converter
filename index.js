@@ -2,10 +2,11 @@ import { Converter } from './src/js/Converter.js'
 export { Converter }
 try {
   const converter = new Converter()
-  console.log(converter.setValue(10).convert('kg', 'lbs'))
-  console.log(converter.convertToCalc('kg', 'lbs'))
-  console.log(converter.convertToString('kg', 'lbs'))
-  console.log(converter.setValue(2).convert('c', 'f'))
+  converter.setDecimals(2)
+  console.log(converter.setValue(2).convertToCalc('c', 'k'))
+  console.log(converter.setValue(65).convertToCalc('f', 'k'))
+  console.log(converter.setValue(22).convertToCalc('c', 'f'))
+  console.log(converter.setValue(25).convertToString('f', 'c'))
 } catch (e) {
-  console.error(e)
+  console.error(e.message)
 }

@@ -5,11 +5,12 @@
 import { WeightConverter } from './unitConverters/WeightConverter.js'
 import { SpeedConverter } from './unitConverters/SpeedConverter.js'
 import { TemperatureConverter } from './unitConverters/TemperatureConverter.js'
+const DEFAULT_DECIMALS = 2
 
 export class Converter {
   #value = 0
   #converters = {}
-  #numberOfDecimals = 2
+  #numberOfDecimals = DEFAULT_DECIMALS
   /** An object mapping the units to the correct converter. */
   #unitMap = {}
 
@@ -62,8 +63,8 @@ export class Converter {
    */
   convert (fromUnit, toUnit) {
     const converter = this.#getCorrectConverter(fromUnit, toUnit)
-    const standardValue = converter.toStandardUnit(this.#value, fromUnit)
-    return this.#adjustDecimals(converter.fromStandardUnit(standardValue, toUnit))
+    const standardValue = converter._toStandardUnit(this.#value, fromUnit)
+    return this.#adjustDecimals(converter._fromStandardUnit(standardValue, toUnit))
   }
 
   /**
@@ -99,6 +100,12 @@ export class Converter {
     }
     const fromType = this.#unitMap[fromUnit]
     const toType = this.#unitMap[toUnit]
+    if (!fromType) {
+      throw new Error(`Unsupported unit: ${fromUnit}. Please provide a valid unit.`)
+    }
+    if (!toType) {
+      throw new Error(`Unsupported unit: ${toUnit}. Please provide a valid unit.`)
+    }
     if (fromType !== toType) {
       throw new Error(`Cannot convert between ${fromUnit} and ${toUnit}`)
     }
@@ -110,11 +117,10 @@ export class Converter {
    * @returns {object} - The object to chain
    */
   setDecimals (decimals) {
-    if (decimals >= 0) {
-      this.#numberOfDecimals = decimals
-    } else if (!Number(decimals) || decimals < 0) {
-      throw new Error('decimals need to be an integer')
+    if (typeof decimals !== 'number' || decimals < 0 || !Number.isInteger(decimals)) {
+      throw new Error('Decimals need to be a non-negative integer')
     }
+    this.#numberOfDecimals = decimals
     return this
   }
 
@@ -128,10 +134,7 @@ export class Converter {
    */
   #adjustDecimals (number) {
     this.#validateNumber(number)
-    if (number === 0) {
-      return number
-    }
-    if (number < 1) {
+    if (number === 0 || number < 1) {
       return number
     }
     const isNegative = number < 0
@@ -163,7 +166,7 @@ export class Converter {
    * @throws {Error} - If not a number.
    */
   #validateNumber (number) {
-    if (Number.isNaN(number)) {
+    if (Number.isNaN(number) || typeof number !== 'number') {
       throw new Error('Please enter a number')
     }
   }
