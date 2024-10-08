@@ -28,7 +28,7 @@ export class Converter {
    */
   #mapConverters (converterInstances) {
     converterInstances.forEach((converter) => {
-      const unitType = converter.getUnitNames()
+      const unitType = converter._getUnitNames()
 
       if (this.#converters[unitType]) {
         throw new Error(`Duplicate unit type: ${unitType}`)
@@ -41,7 +41,7 @@ export class Converter {
   }
 
   #mapUnits (converter, unitType) {
-    converter.getUnitTypes().forEach((unit) => {
+    converter._getUnitTypes().forEach((unit) => {
       this.#unitMap[unit] = unitType
     })
   }
@@ -54,6 +54,26 @@ export class Converter {
     this.#validateNumber(value)
     this.#value = value
     return this
+  }
+
+  getValue () {
+    return this.#value
+  }
+
+  /**
+   * @param {number} decimals - The number of decimals.
+   * @returns {object} - The object to chain
+   */
+  setDecimals (decimals) {
+    if (typeof decimals !== 'number' || decimals < 0 || !Number.isInteger(decimals)) {
+      throw new Error('Decimals need to be a non-negative integer')
+    }
+    this.#numberOfDecimals = decimals
+    return this
+  }
+
+  getDecimals () {
+    return this.#numberOfDecimals
   }
 
   /**
@@ -75,7 +95,7 @@ export class Converter {
   convertToString (fromUnit, toUnit) {
     const converter = this.#getCorrectConverter(fromUnit, toUnit)
     const result = this.convert(fromUnit, toUnit)
-    return converter.toString(result, toUnit)
+    return converter._toString(result, toUnit)
   }
 
   /**
@@ -86,7 +106,7 @@ export class Converter {
   convertToCalc (fromUnit, toUnit) {
     const converter = this.#getCorrectConverter(fromUnit, toUnit)
     const result = this.convert(fromUnit, toUnit)
-    return converter.getCalculationSteps(result, toUnit)
+    return converter._getCalculationSteps(result, toUnit)
   }
 
   /**
@@ -112,38 +132,49 @@ export class Converter {
     return this.#converters[fromType]
   }
 
-  /**
-   * @param {number} decimals - The number of decimals.
-   * @returns {object} - The object to chain
-   */
-  setDecimals (decimals) {
-    if (typeof decimals !== 'number' || decimals < 0 || !Number.isInteger(decimals)) {
-      throw new Error('Decimals need to be a non-negative integer')
-    }
-    this.#numberOfDecimals = decimals
-    return this
-  }
-
-  getDecimals () {
-    return this.#numberOfDecimals
-  }
-
-  /**
-   * @param {number} number - The number to adjust.
-   * @returns {number} The adjusted number.
-   */
   #adjustDecimals (number) {
     this.#validateNumber(number)
-    if (number === 0 || number < 1) {
-      return number
-    }
     const isNegative = number < 0
-    const correctNumber = this.#getAbsouluteNumber(number).toFixed(this.#numberOfDecimals)
+    const absoluteNumber = this.#getAbsoluteNumber(number)
 
-    return isNegative ? -Number(correctNumber) : Number(correctNumber)
+    let decimalAdjusted = this.#applyPrecision(absoluteNumber)
+
+    // If the result would round to 0, dynamically adjust the precision
+    if (absoluteNumber < 1 && Number(decimalAdjusted) === 0) {
+      decimalAdjusted = this.#adjustForSmallValues(absoluteNumber)
+    }
+    return isNegative ? -Number(decimalAdjusted) : Number(decimalAdjusted)
   }
 
-  #getAbsouluteNumber (number) {
+  /**
+   * Apply the set number of decimals to the number.
+   *
+   * @param {number} number - The number to apply the precision to.
+   * @returns {string} The number formatted with the set decimals.
+   */
+  #applyPrecision (number) {
+    return number.toFixed(this.#numberOfDecimals)
+  }
+
+  /**
+   * Dynamically adjust the precision for small values.
+   *
+   * @param {number} number - The number to adjust the precision for.
+   * @returns {string} The number with dynamic precision.
+   */
+  #adjustForSmallValues (number) {
+    let dynamicPrecision = this.#numberOfDecimals
+    let decimalAdjusted = number.toFixed(dynamicPrecision)
+
+    while (Number(decimalAdjusted) === 0 && dynamicPrecision < 20) {
+      dynamicPrecision++
+      decimalAdjusted = number.toFixed(dynamicPrecision)
+    }
+
+    return decimalAdjusted
+  }
+
+  #getAbsoluteNumber (number) {
     return Math.abs(number)
   }
 

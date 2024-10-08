@@ -87,7 +87,7 @@ export class BaseConverter {
    *
    *@returns {string} - The names of the units.
    */
-  getUnitTypes () {
+  _getUnitTypes () {
     return this.#getFilteredObjectKeys('formOfUnits')
   }
 
@@ -95,7 +95,7 @@ export class BaseConverter {
    *
    * @returns {string} - The name of the unit.
    */
-  getUnitNames () {
+  _getUnitNames () {
     return this.units.formOfUnits
   }
 
@@ -105,7 +105,7 @@ export class BaseConverter {
    * @param {string} unit - The unit converted to.
    * @returns {string} - The value and unit as a string.
    */
-  toString (value, unit) {
+  _toString (value, unit) {
     return `${value} ${unit}`
   }
 
@@ -115,7 +115,7 @@ export class BaseConverter {
    * @param {string} unit - The unit.
    * @returns {string} - The calculation steps.
    */
-  getCalculationSteps (calculatedValue, unit) {
+  _getCalculationSteps (calculatedValue, unit) {
     this._pushCalculationStep(`The result is: ${calculatedValue} ${unit}`)
     return this.#calculationSteps.join('\n')
   }
