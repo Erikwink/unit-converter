@@ -198,7 +198,7 @@ export class Converter {
    */
   #validateNumber (number) {
     if (Number.isNaN(number) || typeof number !== 'number') {
-      throw new Error('Please enter a number')
+      throw new Error('Value needs to be a number')
     }
   }
 }
