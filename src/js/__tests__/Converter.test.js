@@ -4,13 +4,13 @@ describe('Converter Class', () => {
   let converter
 
   beforeEach(() => {
-    converter = new Converter() // Default decimals set to 2
+    converter = new Converter()
   })
 
   test('should convert weight from grams to pounds', () => {
     converter.setValue(1000)
     const result = converter.convert('g', 'lbs')
-    expect(result).toBeCloseTo(2.20, 2) // Default decimals to 2, so 1000 grams should be approximately 2.20 lbs
+    expect(result).toBeCloseTo(2.20, 2)
   })
 
   test('should throw error when setting non-numeric value', () => {
