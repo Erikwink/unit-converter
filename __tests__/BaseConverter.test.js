@@ -1,4 +1,4 @@
-import { BaseConverter } from '../unitConverters/BaseConverter.js'
+import { BaseConverter } from '../src/js/unitConverters/BaseConverter.js'
 
 describe('BaseConverter Validation', () => {
   test('should validate a correct units object', () => {

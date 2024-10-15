@@ -1,4 +1,4 @@
-import { Converter } from '../Converter.js'
+import { Converter } from '../src/js/Converter.js'
 
 describe('Converter Class', () => {
   let converter

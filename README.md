@@ -13,7 +13,7 @@ npm install github:Erikwink/unit-converter
 ## 2. Usage
 ### Instantiation
 ```javascript
-import { converter } from 'unit-converter'
+import { Converter } from 'unit-converter'
 const converter = new Converter()
 ```
 ### Package.json
@@ -72,11 +72,9 @@ converter.setValue(20).convert('kg', 'kmh') // Throws Cannot convert between kg 
 ### Output formats
 By default, the converter returns a number. But you can switch the output to either a string with units or a full calculation by using:
 ```javascript
-  converter.stringMode(true)
-  console.log(converter.setValue(20).setDecimals(2).convert('kg', 'lbs'))
+  console.log(converter.setValue(20).setDecimals(2).convertToString('kg', 'lbs'))
   // Returns 44.09 lbs
-  converter.calculationMode(true)
-  console.log(converter.convert('kg', 'lbs'))
+  console.log(converter.convertToCalc('kg', 'lbs'))
   // Returns
   // 20 * 1 kg = 20
   // (20 / 0.45359237)
@@ -101,12 +99,11 @@ By default, the converter returns a number. But you can switch the output to eit
 * 'k'
 
 ## Version
-Version 1.0
+Version 1.1
 ## Language
 Javascript
 ## Bugs
-##### Numbers below 1 and negative numbers
-When the return value is below 1 the decimals wont work as expected. A number below 1 will always return the full number. EX see [Tests](./TEST-REPORT.md)
+No known bugs at the moment please report if you find any bugs!
 
 ## Contributions
 Feel free to contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
@@ -157,16 +154,14 @@ export class Converter {
   }
 }
 ```
-4. Make sure to test, document and follow the code style in your classes before submiting a push request. See [tests](./TEST-REPORT.md) for details.
+4. Make sure to test, document and follow the code style in your classes before submiting a push request. See [Tests](./test-reports/reports/test-report.md) for details.
 
 5. ### Special cases.
-if your converter doesn't follow the same pattern for conversion you might have to ovveride the methods in the class. see example
+if your converter doesn't follow the same pattern for conversion you might have to ovveride the methods in the class. See example, or look at [TemperatureConverter.js](./src/js/unitConverters/TemperatureConverter.js)
 ```javascript
-/** Class representing a temperature converter. */
+import { BaseConverter } from './BaseConverter.js'
+
 export class TemperatureConverter extends BaseConverter {
-  /** The constructor.
-   *
-   */
   constructor () {
     super({
       formOfUnits: 'temperature',
@@ -188,31 +183,27 @@ export class TemperatureConverter extends BaseConverter {
     })
   }
 
-  /** Override the toStandardUnit method to handle offset for Kelvin separately.
+  /**
+   * Overrides ToStandardUnit to handles special cases for Kelvin.
    *
-   * @param {number} value - The value to convert.
-   * @param {string} unit - The unit to convert.
-   * @returns {number} - The converted number.
+   * @param {number} value
+   * @param {string} unit
+   * @returns {number}
    */
-  toStandardUnit (value, unit) {
-    this.calulationSteps = []
-    const unitData = this.units[unit]
-    if (!unitData) {
-      throw new Error(`Unsupported unit: ${unit}`)
-    }
+  _toStandardUnit (value, unit) {
+    this._validateUnit(unit)
+    this._resetCalculationSteps()
 
     if (unit === 'k') {
-      this.calulationSteps.push(`${value} - ${unitData.offset}`)
-      return value - unitData.offset
+      return this.#convertKelvinToStandard(value, this.units[unit])
     } else if (unit === 'f') {
-      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.ToStandardMeasurement}`)
-      return (value - unitData.offset) / unitData.ToStandardMeasurement
+      return this.#convertFahrenheitToStandard(value, this.units[unit])
+    } else if (unit === 'c') {
+      return this.#convertCelsiusToStandard(value, this.units[unit])
     } else {
-      this.calulationSteps.push(`${value} * ${unitData.ToStandardMeasurement}`)
-      return value * unitData.ToStandardMeasurement
+      throw new Error('Error from temperatureConverter')
     }
   }
-
 
 ```
 
@@ -220,8 +211,8 @@ export class TemperatureConverter extends BaseConverter {
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE.TXT) file for details.
 
 ## Testing 
-The module is tested using manul tests.
-See test page more info [Tests](./TEST-REPORT.md)
+The module is tested using manul tests and automated tests.
+See test page more info [Tests](./TEST-REPORT.md) And [Automated-test](./test-reports/reports/test-report.md)
 
 
 
