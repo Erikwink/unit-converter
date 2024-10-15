@@ -19,10 +19,13 @@ class MarkdownReporter {
     reportLines.push(`**Skipped Tests**: ${results.numPendingTests}\n`)
     reportLines.push('\n')
 
-    // Iterate through test suites and create a separate table for each
+    const rootDirectory = process.cwd()
+
     results.testResults.forEach(suite => {
+      const relativePath = path.relative(rootDirectory, suite.testFilePath)
+
       // Add a table header for the test suite
-      reportLines.push(`## Test Suite: ${suite.testFilePath}\n`)
+      reportLines.push(`## Test Suite: ${relativePath}\n`)
       reportLines.push('| Test | Status | Duration |\n')
       reportLines.push('|------|--------|----------|\n')
 
