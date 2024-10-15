@@ -2,8 +2,12 @@
   "name": "unit-converter",
   "version": "1.0.0",
   "description": "A module for converting between different units.",
-  "main": "index.js",
+  "main": "./index.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Erikwink/unit-converter"
+  },
   "scripts": {
     "start": "node index.js",
     "test": "jest",
