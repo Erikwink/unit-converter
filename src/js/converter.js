@@ -118,6 +118,9 @@ export class Converter {
     if (typeof fromUnit !== 'string' || typeof toUnit !== 'string') {
       throw new Error('Units need to be strings, e.g., "kg" or "lbs".')
     }
+    if (fromUnit === toUnit) {
+      throw new Error('Cannot convert between the same unit.')
+    }
     const fromType = this.#unitMap[fromUnit]
     const toType = this.#unitMap[toUnit]
     if (!fromType) {
