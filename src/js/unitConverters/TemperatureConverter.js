@@ -1,10 +1,10 @@
+/* eslint-disable jsdoc/require-param-description */
+/* eslint-disable jsdoc/require-description */
+/* eslint-disable jsdoc/require-returns-description */
+/* eslint-disable jsdoc/require-jsdoc */
 import { BaseConverter } from './BaseConverter.js'
 
-/** Class representing a temperature converter. */
 export class TemperatureConverter extends BaseConverter {
-  /** The constructor.
-   *
-   */
   constructor () {
     super({
       formOfUnits: 'temperature',
@@ -26,52 +26,112 @@ export class TemperatureConverter extends BaseConverter {
     })
   }
 
-  /** Override the toStandardUnit method to handle offset for Kelvin separately.
+  /**
+   * Overrides ToStandardUnit to handles special cases for Kelvin.
    *
-   * @param {number} value - The value to convert.
-   * @param {string} unit - The unit to convert.
-   * @returns {number} - The converted number.
+   * @param {number} value
+   * @param {string} unit
+   * @returns {number}
    */
-  toStandardUnit (value, unit) {
-    this.calulationSteps = []
-    const unitData = this.units[unit]
-    if (!unitData) {
-      throw new Error(`Unsupported unit: ${unit}`)
-    }
+  _toStandardUnit (value, unit) {
+    this._validateUnit(unit)
+    this._resetCalculationSteps()
 
     if (unit === 'k') {
-      this.calulationSteps.push(`${value} - ${unitData.offset}`)
-      return value - unitData.offset
+      return this.#convertKelvinToStandard(value, this.units[unit])
     } else if (unit === 'f') {
-      this.calulationSteps.push(`${value} - ${unitData.offset} / ${unitData.ToStandardMeasurement}`)
-      return (value - unitData.offset) / unitData.ToStandardMeasurement
+      return this.#convertFahrenheitToStandard(value, this.units[unit])
+    } else if (unit === 'c') {
+      return this.#convertCelsiusToStandard(value, this.units[unit])
     } else {
-      this.calulationSteps.push(`${value} * ${unitData.ToStandardMeasurement}`)
-      return value * unitData.ToStandardMeasurement
+      throw new Error('Error from temperatureConverter')
     }
   }
 
-  /** Override the fromStandardUnit method to handle offset for Kelvin separately.
+  /**
+   * Overrides fromStandardUnit to handles special cases for Kelvin.
    *
-   * @param {number} value - The value to convert.
-   * @param {string} unit - The unit to convert.
-   * @returns {number} - The converted number.
+   * @param {number} value
+   * @param {string} unit
+   * @returns {number}
    */
-  fromStandardUnit (value, unit) {
-    const unitData = this.units[unit]
-    if (!unitData) {
-      throw new Error(`Unsupported unit: ${unit}`)
-    }
+  _fromStandardUnit (value, unit) {
+    this._validateUnit(unit)
 
     if (unit === 'k') {
-      this.calulationSteps.push(`${value} + ${unitData.offset}`)
-      return value + unitData.offset
+      return this.#convertStandardToKelvin(value, this.units[unit])
     } else if (unit === 'f') {
-      this.calulationSteps.push(`(${value} * ${unitData.ToStandardMeasurement}) + ${unitData.offset}`)
-      return (value * unitData.ToStandardMeasurement) + unitData.offset
+      return this.#convertStandardToFahrenheit(value, this.units[unit])
+    } else if (unit === 'c') {
+      return this.#convertStandardToCelsius(value, this.units[unit])
     } else {
-      this.calulationSteps.push(`${value} / ${unitData.ToStandardMeasurement}`)
-      return value / unitData.ToStandardMeasurement
+      throw new Error('Error from temperatureConverter')
     }
+  }
+
+  /**
+   * @param {number} value
+   * @param {object} unit
+   * @returns {number}
+   */
+  #convertKelvinToStandard (value, unit) {
+    const result = value - unit.offset
+    this._pushCalculationStep(`${value} - ${unit.offset} = ${result}`)
+    return result
+  }
+
+  /**
+   * @param {number} value
+   * @param {object} unit
+   * @returns {number}
+   */
+  #convertFahrenheitToStandard (value, unit) {
+    const result = (value - unit.offset) / unit.ToStandardMeasurement
+    this._pushCalculationStep(`${value} - ${unit.offset} / ${unit.ToStandardMeasurement} = ${result}`)
+    return result
+  }
+
+  /**
+   * @param {number} value
+   * @param {object} unit
+   * @returns {number}
+   */
+  #convertCelsiusToStandard (value, unit) {
+    const result = value * unit.ToStandardMeasurement
+    this._pushCalculationStep(`${value} * ${unit.ToStandardMeasurement} = ${result}`)
+    return result
+  }
+
+  /**
+   * @param {number} value
+   * @param {object} unit
+   * @returns {number}
+   */
+  #convertStandardToKelvin (value, unit) {
+    const result = value + unit.offset
+    this._pushCalculationStep(`${value} + ${unit.offset} = ${result}`)
+    return result
+  }
+
+  /**
+   * @param {number} value
+   * @param {object} unit
+   * @returns {number}
+   */
+  #convertStandardToFahrenheit (value, unit) {
+    const result = (value * unit.ToStandardMeasurement) + unit.offset
+    this._pushCalculationStep(`(${value} * ${unit.ToStandardMeasurement}) + ${unit.offset} = ${result}`)
+    return result
+  }
+
+  /**
+   * @param {number} value
+   * @param {object} unit
+   * @returns {number}
+   */
+  #convertStandardToCelsius (value, unit) {
+    const result = value / unit.ToStandardMeasurement
+    this._pushCalculationStep(`${value} / ${unit.ToStandardMeasurement} = ${result}`)
+    return result
   }
 }

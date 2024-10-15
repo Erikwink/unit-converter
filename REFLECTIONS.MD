@@ -34,3 +34,10 @@ Looking at my old code i dont really see a lot of functions with more than two a
 ***Use searchable names*** and ***Avoid mental mapping*** is another thing im going to think about in the future. Previously ive been using (Number1, Number2) or (a, b) as arguments which can cause confusing for others using my code.
 In my module i used setValue and getUnits which follows the rule of ***Method Names*** and ***Pick One Word Per Concept***, but it made me wonder about the getters and setters that are standardised in Javascript (set Value, get Units). Maybe it would have been better to use them for other programmers to understand and use the code more efficiently.
 Sometimes my code can be a bit unstructured, i tend to jump between classes and sometimes i get tired of a problem and start working on another one insted. I think that this has made me make mistakes that violates the ***Pick on word per concept*** rule. In this module i named the units in my converters as shortenings 'kmh', 'g', 'lbs'. But for temperature i used the full names 'celsius, fahrenheit'. I didnt even think about it at the time but after reading the book i realised my mistake. I also used the full name for 'ton' but i think that makes it easier to use because its relativly short and doesnt really have a shortening. 
+
+
+## After W2
+Moved functionality from constructor to separate functions. Renamed checkdecimals to adjustDecimals. getAbsouluteNumber method. Removed flags and made convertToString and convertToCalc. Broke out #getConverters to use same logic in all methods. renmaned to getCorrectConverter for clarity convertToNumber???
+getUnits kept jsdoc for user to see when hover
+refactored temperatureConverter and made names more desciptive! broke out functionality
+DEFAULT_DECIMALS = 2, made magic number to variable.
