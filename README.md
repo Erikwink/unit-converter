@@ -103,7 +103,8 @@ Version 1.1
 ## Language
 Javascript
 ## Bugs
-No known bugs at the moment please report if you find any bugs!
+### Displaying decimals
+Due to node JS, when the result is 0.20 it will be displayed as 0.2 and so on.
 
 ## Contributions
 Feel free to contributions to the unit-converter module! If you would like to add support for new types of conversions follow these steps to create your own converter class:
