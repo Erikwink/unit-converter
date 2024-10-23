@@ -8,6 +8,7 @@ export class SpeedConverter extends BaseConverter {
   constructor () {
     super({
       formOfUnits: 'speed',
+      standardUnit: 'kmh',
       kmh: {
         name: 'kmh',
         ToStandardMeasurement: 1

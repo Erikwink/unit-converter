@@ -24,7 +24,7 @@ export class BaseConverter {
       throw new Error('The units object must include a "formOfUnits" key as a string.')
     }
     for (const [key, value] of Object.entries(units)) {
-      if (key === 'formOfUnits') continue
+      if (key === 'formOfUnits' || key === 'standardUnit') continue
       if (typeof value !== 'object' || value === null) {
         throw new Error(`Unit "${key}" must be an object.`)
       }
@@ -59,7 +59,7 @@ export class BaseConverter {
 
     const result = value * this.units[unit].ToStandardMeasurement
     this._pushCalculationStep(
-      `${value} * ${this.units[unit].ToStandardMeasurement} ${unit} = ${result} `
+      `${value} * ${this.units[unit].ToStandardMeasurement} ${unit} = ${result} ${this.units.standardUnit} `
     )
     return result
   }
@@ -78,7 +78,7 @@ export class BaseConverter {
     this._validateUnit(unit)
     const result = value / this.units[unit].ToStandardMeasurement
     this._pushCalculationStep(
-      `(${value} / ${this.units[unit].ToStandardMeasurement} = ${result})`
+      `(${value} / ${this.units[unit].ToStandardMeasurement} = ${result} ${unit})`
     )
     return result
   }

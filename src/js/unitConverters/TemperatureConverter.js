@@ -8,6 +8,7 @@ export class TemperatureConverter extends BaseConverter {
   constructor () {
     super({
       formOfUnits: 'temperature',
+      standardUnit: 'c',
       c: {
         name: 'c',
         ToStandardMeasurement: 1,
@@ -76,7 +77,7 @@ export class TemperatureConverter extends BaseConverter {
    */
   #convertKelvinToStandard (value, unit) {
     const result = value - unit.offset
-    this._pushCalculationStep(`${value} - ${unit.offset} = ${result}`)
+    this._pushCalculationStep(`${value} ${unit.name} - ${unit.offset} = ${result} ${this.units.standardUnit}`)
     return result
   }
 
@@ -87,7 +88,8 @@ export class TemperatureConverter extends BaseConverter {
    */
   #convertFahrenheitToStandard (value, unit) {
     const result = (value - unit.offset) / unit.ToStandardMeasurement
-    this._pushCalculationStep(`${value} - ${unit.offset} / ${unit.ToStandardMeasurement} = ${result}`)
+
+    this._pushCalculationStep(`${value} ${unit.name} - ${unit.offset} / ${unit.ToStandardMeasurement} = ${result} ${this.units.standardUnit}`)
     return result
   }
 
@@ -98,7 +100,7 @@ export class TemperatureConverter extends BaseConverter {
    */
   #convertCelsiusToStandard (value, unit) {
     const result = value * unit.ToStandardMeasurement
-    this._pushCalculationStep(`${value} * ${unit.ToStandardMeasurement} = ${result}`)
+    this._pushCalculationStep(`${value} ${unit.name} * ${unit.ToStandardMeasurement} = ${result} ${this.units.standardUnit}`)
     return result
   }
 
@@ -109,7 +111,7 @@ export class TemperatureConverter extends BaseConverter {
    */
   #convertStandardToKelvin (value, unit) {
     const result = value + unit.offset
-    this._pushCalculationStep(`${value} + ${unit.offset} = ${result}`)
+    this._pushCalculationStep(`${value} ${this.units.standardUnit}  + ${unit.offset} = ${result} ${unit.name}`)
     return result
   }
 
@@ -120,7 +122,7 @@ export class TemperatureConverter extends BaseConverter {
    */
   #convertStandardToFahrenheit (value, unit) {
     const result = (value * unit.ToStandardMeasurement) + unit.offset
-    this._pushCalculationStep(`(${value} * ${unit.ToStandardMeasurement}) + ${unit.offset} = ${result}`)
+    this._pushCalculationStep(`(${value} ${this.units.standardUnit} * ${unit.ToStandardMeasurement}) + ${unit.offset} = ${result} ${unit.name}`)
     return result
   }
 
@@ -131,7 +133,7 @@ export class TemperatureConverter extends BaseConverter {
    */
   #convertStandardToCelsius (value, unit) {
     const result = value / unit.ToStandardMeasurement
-    this._pushCalculationStep(`${value} / ${unit.ToStandardMeasurement} = ${result}`)
+    this._pushCalculationStep(`${value} ${this.units.standardUnit} / ${unit.ToStandardMeasurement} = ${result} ${unit.name}`)
     return result
   }
 }

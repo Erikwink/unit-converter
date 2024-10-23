@@ -8,6 +8,7 @@ export class WeightConverter extends BaseConverter {
   constructor () {
     super({
       formOfUnits: 'weight',
+      standardUnit: 'kg',
       kg: {
         name: 'kg',
         ToStandardMeasurement: 1
