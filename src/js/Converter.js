@@ -37,12 +37,15 @@ export class Converter {
       this.#converters[unitType] = converter
       // Map the units to the correct converter
       this.#mapUnits(converter, unitType)
+      console.log(this.#unitMap)
     })
   }
 
   #mapUnits (converter, unitType) {
     converter._getUnitTypes().forEach((unit) => {
-      this.#unitMap[unit] = unitType
+      if (unit !== 'standardUnit') {
+        this.#unitMap[unit] = unitType
+      }
     })
   }
 
